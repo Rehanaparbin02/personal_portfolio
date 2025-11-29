@@ -1,0 +1,144 @@
+.work-container {
+  min-height: calc(100vh - 60px);
+  padding: 60px 40px;
+  background-color: #f4efe3;
+
+  /* on-load animation base */
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* when React adds this class, page fades/lifts in */
+.work-container.work-loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =============================
+   Intro Section
+============================= */
+.work-intro {
+  text-align: center;
+  margin-bottom: 6rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+
+  /* keep intro slide-up animation */
+  animation: fadeInUp 1s ease-out forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.intro-subtitle {
+  font-family: "Inter", sans-serif;
+  color: #2c3e5c;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.intro-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 5.5rem;
+  color: #1d2342;
+  margin: 0;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.intro-text {
+  font-family: "Inter", sans-serif;
+  color: #444;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-top: 1.5rem;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* =============================
+   Work Section
+============================= */
+.work-title {
+  font-size: 12rem;
+  color: #1d2342;
+  margin-bottom: 20px;
+  text-align: center;
+  position: relative;
+  top: -5rem;
+}
+
+.work-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 60px;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  padding: 40px 0;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* each WorkCase wrapper: scroll-into-view animation */
+.work-item {
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+  transition:
+    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+/* when visible via IntersectionObserver */
+.work-item.work-item-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* slight stagger based on grid position (optional but nice) */
+.work-item:nth-child(1).work-item-visible {
+  transition-delay: 0.05s;
+}
+
+.work-item:nth-child(2).work-item-visible {
+  transition-delay: 0.12s;
+}
+
+.work-item:nth-child(3).work-item-visible {
+  transition-delay: 0.18s;
+}
+
+.work-item:nth-child(4).work-item-visible {
+  transition-delay: 0.24s;
+}
+
+/* =============================
+   Responsive
+============================= */
+@media (max-width: 900px) {
+  .work-wrapper {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .intro-title {
+    font-size: 3.5rem;
+  }
+  .work-title {
+    font-size: 5rem;
+    top: -3rem;
+  }
+}

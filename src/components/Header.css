@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Koulen&display=swap');
+
+body {
+  margin: 0;
+  background-color: #f4efe3;
+  font-family: 'Koulen', sans-serif;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1d2342;
+  padding: 10px 60px;
+  color: #f4efe3;
+  font-size: 20px;
+  position: relative;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+/* Nav links section - Desktop */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.nav-links a {
+  position: relative;
+  text-decoration: none;
+  color: #f4efe3;
+  text-transform: uppercase;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+/* Sliding underline on hover and active */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #f4efe3;
+  transition: width 0.4s ease, left 0.4s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Contact Button (Desktop) */
+.contact-btn {
+  background-color: #f4efe3;
+  color: #1d2342;
+  padding: 6px 28px;
+  font-size: 18px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.contact-btn:hover {
+  background-color: #dcd6c2;
+  transform: scale(1.05);
+}
+
+/* Mobile Menu Toggle - Hidden by default */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 1001;
+}
+
+/* Hamburger Icon */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 28px;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: #f4efe3;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+/* Hamburger Animation when open */
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Drawer Overlay */
+.drawer-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
+/* Drawer Menu */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background-color: #1d2342;
+  z-index: 999;
+  transition: right 0.3s ease;
+  padding-top: 80px;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.drawer.open {
+  right: 0;
+}
+
+.drawer-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.drawer-nav a {
+  text-decoration: none;
+  color: #f4efe3;
+  text-transform: uppercase;
+  font-size: 22px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(244, 239, 227, 0.2);
+  transition: padding-left 0.3s ease;
+}
+
+.drawer-nav a:hover {
+  padding-left: 10px;
+}
+
+.drawer-nav a.active {
+  color: #f4efe3;
+  border-bottom: 2px solid #f4efe3;
+}
+
+.drawer-nav a.drawer-contact {
+  background-color: #f4efe3;
+  color: #1d2342;
+  padding: 12px 20px;
+  text-align: center;
+  border-bottom: none;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.drawer-nav a.drawer-contact:hover {
+  background-color: #dcd6c2;
+  padding-left: 20px;
+}
+
+/* Responsive Breakpoint */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 20px;
+  }
+
+  /* Hide desktop navigation */
+  .nav-links,
+  .contact-btn {
+    display: none;
+  }
+
+  /* Show mobile menu toggle */
+  .menu-toggle {
+    display: block;
+  }
+
+  /* Show drawer overlay when open */
+  .drawer-overlay {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .drawer {
+    width: 250px;
+    right: -250px;
+  }
+
+  .drawer-nav a {
+    font-size: 20px;
+  }
+}
