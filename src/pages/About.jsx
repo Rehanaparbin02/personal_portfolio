@@ -61,18 +61,21 @@ const About = () => {
       <div
         className={`about-intro-card ${isVisible.intro ? 'reveal' : ''}`}
         data-section="intro"
+        id="process"
       >
         <p className="about-text-large">
-          My development philosophy, <span className="highlighted-name">"Design First, Function Always"</span>, focuses on <span className="highlighted-name"> learning </span> and <span className="highlighted-name">exploration</span>. 
-          I strive to create <span className="highlighted-name">elegant</span>, <span className="highlighted-name">efficient</span> code and <span className="highlighted-name">user-friendly experiences</span>. My process begins with 
-          <span className="highlighted-name"> UI/UX prototyping</span> using <span className="highlighted-name"> Figma</span> and <span className="highlighted-name">Webflow</span>, followed by the 
-          development of <span className="highlighted-name">high-performance front-end applications</span> in <span className="highlighted-name"> React.js</span> and <span className="highlighted-name">React Native</span>. 
-          I am also devoted to building <span className="highlighted-name">dependable back-end systems</span> using <span className="highlighted-name"> Node.js</span>, <span className="highlighted-name">Express.js</span>, and <span className="highlighted-name">PostgreSQL</span>/<span className="highlighted-name">Supabase</span>, as well as 
-          integrating <span className="highlighted-name"> AI</span> and <span className="highlighted-name">machine learning</span> to enhance my 
+          My development philosophy, <span className="highlighted-name">"Design First, Function Always"</span>, focuses on <span className="highlighted-name"> learning </span> and <span className="highlighted-name">exploration</span>.
+          I strive to create <span className="highlighted-name">elegant</span>, <span className="highlighted-name">efficient</span> code and <span className="highlighted-name">user-friendly experiences</span>. My process begins with
+          <span className="highlighted-name"> UI/UX prototyping</span> using <span className="highlighted-name"> Figma</span> and <span className="highlighted-name">Webflow</span>, followed by the
+          development of <span className="highlighted-name">high-performance front-end applications</span> in <span className="highlighted-name"> React.js</span> and <span className="highlighted-name">React Native</span>.
+          I am also devoted to building <span className="highlighted-name">dependable back-end systems</span> using <span className="highlighted-name"> Node.js</span>, <span className="highlighted-name">Express.js</span>, and <span className="highlighted-name">PostgreSQL</span>/<span className="highlighted-name">Supabase</span>, as well as
+          integrating <span className="highlighted-name"> AI</span> and <span className="highlighted-name">machine learning</span> to enhance my
           digital products.
         </p>
 
       </div>
+
+
 
       <div className="two-column-grid">
         <section
@@ -114,98 +117,98 @@ const About = () => {
       </div>
 
       <section
-          className={`about-card tools-card ${isVisible.tools ? 'reveal' : ''}`}
-          data-section="tools"
-        >
-          <div className="card-header">
-            <h2 className="section-title">Favorite Tools</h2>
+        className={`about-card tools-card ${isVisible.tools ? 'reveal' : ''}`}
+        data-section="tools"
+      >
+        <div className="card-header">
+          <h2 className="section-title">Favorite Tools</h2>
+        </div>
+
+        <div className="tools-grid">
+          {/* Figma */}
+          <div className="tool-item hover-lift">
+            <div className="tool-icon">
+              <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M50 300c27.6 0 50-22.4 50-50v-50H50c-27.6 0-50 22.4-50 50s22.4 50 50 50z" />
+                <path fill="currentColor" d="M0 150c0-27.6 22.4-50 50-50h50v100H50c-27.6 0-50-22.4-50-50z" />
+                <path fill="currentColor" d="M0 50C0 22.4 22.4 0 50 0h50v100H50C22.4 100 0 77.6 0 50z" />
+                <path fill="currentColor" d="M100 0h50c27.6 0 50 22.4 50 50s-22.4 50-50 50h-50V0z" />
+                <path fill="currentColor" d="M200 150c0 27.6-22.4 50-50 50s-50-22.4-50-50 22.4-50 50-50 50 22.4 50 50z" />
+              </svg>
+            </div>
+            <p className="tool-name">Figma</p>
           </div>
 
-          <div className="tools-grid">
-            {/* Figma */}
-            <div className="tool-item hover-lift">
-              <div className="tool-icon">
-                <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
-                  <path fill="currentColor" d="M50 300c27.6 0 50-22.4 50-50v-50H50c-27.6 0-50 22.4-50 50s22.4 50 50 50z"/>
-                  <path fill="currentColor" d="M0 150c0-27.6 22.4-50 50-50h50v100H50c-27.6 0-50-22.4-50-50z"/>
-                  <path fill="currentColor" d="M0 50C0 22.4 22.4 0 50 0h50v100H50C22.4 100 0 77.6 0 50z"/>
-                  <path fill="currentColor" d="M100 0h50c27.6 0 50 22.4 50 50s-22.4 50-50 50h-50V0z"/>
-                  <path fill="currentColor" d="M200 150c0 27.6-22.4 50-50 50s-50-22.4-50-50 22.4-50 50-50 50 22.4 50 50z"/>
-                </svg>
-              </div>
-              <p className="tool-name">Figma</p>
+          {/* React */}
+          <div className="tool-item hover-lift">
+            <div className="tool-icon">
+              <svg viewBox="-11.5 -10.23174 23 20.46348" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="0" cy="0" r="2.05" fill="currentColor" />
+                <g stroke="currentColor" strokeWidth="1" fill="none">
+                  <ellipse rx="11" ry="4.2" />
+                  <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+                  <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+                </g>
+              </svg>
             </div>
-
-            {/* React */}
-            <div className="tool-item hover-lift">
-              <div className="tool-icon">
-                <svg viewBox="-11.5 -10.23174 23 20.46348" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="0" cy="0" r="2.05" fill="currentColor"/>
-                  <g stroke="currentColor" strokeWidth="1" fill="none">
-                    <ellipse rx="11" ry="4.2"/>
-                    <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
-                    <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
-                  </g>
-                </svg>
-              </div>
-              <p className="tool-name">React</p>
-            </div>
-
-            {/* Webflow */}
-            <div className="tool-item hover-lift">
-              <div className="tool-icon">
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                  <path fill="currentColor" d="M100 0L150 50L100 100L50 50L100 0Z"/>
-                  <path fill="currentColor" d="M50 50L100 100L50 150L0 100L50 50Z"/>
-                  <path fill="currentColor" d="M150 50L200 100L150 150L100 100L150 50Z"/>
-                  <path fill="currentColor" d="M100 100L150 150L100 200L50 150L100 100Z"/>
-                </svg>
-              </div>
-              <p className="tool-name">Webflow</p>
-            </div>
-
-            {/* GitHub */}
-            <div className="tool-item hover-lift">
-              <div className="tool-icon">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path fill="currentColor" d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.41 7.86 10.94.58.11.79-.25.79-.56v-2.03c-3.2.7-3.87-1.38-3.87-1.38-.53-1.35-1.3-1.71-1.3-1.71-1.07-.73.08-.72.08-.72 1.18.08 1.8 1.22 1.8 1.22 1.05 1.8 2.76 1.28 3.43.98.1-.76.41-1.28.75-1.57-2.55-.29-5.24-1.27-5.24-5.63 0-1.24.44-2.25 1.16-3.04-.12-.29-.5-1.45.11-3.03 0 0 .96-.31 3.15 1.16a10.97 10.97 0 0 1 2.87-.39c.97 0 1.95.13 2.87.39 2.19-1.47 3.15-1.16 3.15-1.16.61 1.58.23 2.74.11 3.03.72.79 1.16 1.8 1.16 3.04 0 4.37-2.7 5.34-5.27 5.63.42.36.8 1.09.8 2.21v3.28c0 .31.21.68.8.56A10.5 10.5 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5z"/>
-                </svg>
-              </div>
-              <p className="tool-name">GitHub</p>
-            </div>
-
-            {/* VS Code */}
-            <div className="tool-item hover-lift">
-              <div className="tool-icon">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path fill="currentColor" d="M3.59 7.36 2 8.74v6.52l1.59 1.38L9 12 3.59 7.36zM15 3l-8.94 8.17L15 19V3zM21 5v14l-2-.01V5L21 5z"/>
-                </svg>
-              </div>
-              <p className="tool-name">VS Code</p>
-            </div>
-
-            {/* Postman */}
-            <div className="tool-item hover-lift">
-              <div className="tool-icon">
-                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" strokeWidth="4"/>
-                  <path fill="currentColor" d="M24 32h16v4H24zM30 24h4v16h-4z"/>
-                </svg>
-              </div>
-              <p className="tool-name">Postman</p>
-            </div>
-
-            {/* Expo */}
-            <div className="tool-item hover-lift">
-              <div className="tool-icon">
-                <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                  <path fill="currentColor" d="M100 432L256 80l156 352h-64l-92-224-92 224z"/>
-                </svg>
-              </div>
-              <p className="tool-name">Expo</p>
-            </div>
+            <p className="tool-name">React</p>
           </div>
-        </section>
+
+          {/* Webflow */}
+          <div className="tool-item hover-lift">
+            <div className="tool-icon">
+              <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M100 0L150 50L100 100L50 50L100 0Z" />
+                <path fill="currentColor" d="M50 50L100 100L50 150L0 100L50 50Z" />
+                <path fill="currentColor" d="M150 50L200 100L150 150L100 100L150 50Z" />
+                <path fill="currentColor" d="M100 100L150 150L100 200L50 150L100 100Z" />
+              </svg>
+            </div>
+            <p className="tool-name">Webflow</p>
+          </div>
+
+          {/* GitHub */}
+          <div className="tool-item hover-lift">
+            <div className="tool-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.41 7.86 10.94.58.11.79-.25.79-.56v-2.03c-3.2.7-3.87-1.38-3.87-1.38-.53-1.35-1.3-1.71-1.3-1.71-1.07-.73.08-.72.08-.72 1.18.08 1.8 1.22 1.8 1.22 1.05 1.8 2.76 1.28 3.43.98.1-.76.41-1.28.75-1.57-2.55-.29-5.24-1.27-5.24-5.63 0-1.24.44-2.25 1.16-3.04-.12-.29-.5-1.45.11-3.03 0 0 .96-.31 3.15 1.16a10.97 10.97 0 0 1 2.87-.39c.97 0 1.95.13 2.87.39 2.19-1.47 3.15-1.16 3.15-1.16.61 1.58.23 2.74.11 3.03.72.79 1.16 1.8 1.16 3.04 0 4.37-2.7 5.34-5.27 5.63.42.36.8 1.09.8 2.21v3.28c0 .31.21.68.8.56A10.5 10.5 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5z" />
+              </svg>
+            </div>
+            <p className="tool-name">GitHub</p>
+          </div>
+
+          {/* VS Code */}
+          <div className="tool-item hover-lift">
+            <div className="tool-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M3.59 7.36 2 8.74v6.52l1.59 1.38L9 12 3.59 7.36zM15 3l-8.94 8.17L15 19V3zM21 5v14l-2-.01V5L21 5z" />
+              </svg>
+            </div>
+            <p className="tool-name">VS Code</p>
+          </div>
+
+          {/* Postman */}
+          <div className="tool-item hover-lift">
+            <div className="tool-icon">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" strokeWidth="4" />
+                <path fill="currentColor" d="M24 32h16v4H24zM30 24h4v16h-4z" />
+              </svg>
+            </div>
+            <p className="tool-name">Postman</p>
+          </div>
+
+          {/* Expo */}
+          <div className="tool-item hover-lift">
+            <div className="tool-icon">
+              <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M100 432L256 80l156 352h-64l-92-224-92 224z" />
+              </svg>
+            </div>
+            <p className="tool-name">Expo</p>
+          </div>
+        </div>
+      </section>
 
 
       <section
@@ -256,7 +259,7 @@ const About = () => {
         </div>
       </section>
 
-     <section
+      <section
         className={`about-card interests-card ${isVisible.interests ? 'reveal' : ''}`}
         data-section="interests"
       >
@@ -264,11 +267,11 @@ const About = () => {
           <h2 className="section-title">Beyond Work</h2>
         </div>
         <p className="about-text">
-          When I'm not immersed in <span className="highlighted-name">code</span> or <span className="highlighted-name">design grids</span>, 
-          I turn to <span className="highlighted-name">sketching</span> – my quiet space to translate thoughts into lines and forms. 
-          I draw inspiration from <span className="highlighted-name">anime</span>, and I love watching <span className="highlighted-name"> historical shows</span>, <span className="highlighted-name">documentaries</span>, 
-          and listening to <span className="highlighted-name">podcasts</span> across <span className="highlighted-name"> various genres</span>. 
-          I enjoy exploring how <span className="highlighted-name">art</span>, <span className="highlighted-name">culture</span>, and <span className="highlighted-name">technology</span> mirror each other, constantly shaping the way we see and build the world. 
+          When I'm not immersed in <span className="highlighted-name">code</span> or <span className="highlighted-name">design grids</span>,
+          I turn to <span className="highlighted-name">sketching</span> – my quiet space to translate thoughts into lines and forms.
+          I draw inspiration from <span className="highlighted-name">anime</span>, and I love watching <span className="highlighted-name"> historical shows</span>, <span className="highlighted-name">documentaries</span>,
+          and listening to <span className="highlighted-name">podcasts</span> across <span className="highlighted-name"> various genres</span>.
+          I enjoy exploring how <span className="highlighted-name">art</span>, <span className="highlighted-name">culture</span>, and <span className="highlighted-name">technology</span> mirror each other, constantly shaping the way we see and build the world.
           Those explorations often find their way back into my designs – as <span className="highlighted-name"> emotion</span>, <span className="highlighted-name">balance</span>, and <span className="highlighted-name"> rhythm</span>.
         </p>
       </section>

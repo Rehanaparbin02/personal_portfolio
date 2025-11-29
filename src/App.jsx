@@ -6,7 +6,7 @@ import LoadingCounter from './LoadingCounter';
 import ErrorBoundary from './components/ErrorBoundary';
 
 // 💡 NEW: Import the Footer component
-import Footer from "./components/Footer"; 
+import Footer from "./components/Footer";
 
 import "./App.css";
 
@@ -14,6 +14,7 @@ import "./App.css";
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const Work = lazy(() => import("./pages/Work"));
+const Process = lazy(() => import("./pages/Process"));
 const Contact = lazy(() => import("./pages/Contact"));
 
 // Lazy load showcase components (these are heavy)
@@ -85,6 +86,7 @@ const App = () => {
               <Route path="/about" element={<About />} />
               <Route path="/work" element={<Work />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/process" element={<Process />} />
 
               {/* Showcase routes */}
               <Route path="/showcase/koa" element={<ProjectShowcaseKOA />} />
@@ -93,9 +95,9 @@ const App = () => {
               <Route path="/showcase/foodlog" element={<ProjectShowcaseFOODLOG />} />
             </Routes>
           </Suspense>
-          
+
           {/* 💡 FOOTER: Placed outside the Routes/Suspense to be always visible */}
-          <Footer /> 
+          <Footer />
         </ErrorBoundary>
       )}
     </>

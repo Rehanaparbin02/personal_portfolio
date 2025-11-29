@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
+import { Link } from "react-router-dom";
 import {
+  FaBehance,
+  FaDownload,
   FaEnvelope,
   FaGithub,
   FaInstagram,
   FaLinkedin,
-  FaTwitter,
 } from "react-icons/fa";
 import { HiArrowUpRight } from "react-icons/hi2";
 import "./Footer.css";
@@ -64,60 +66,6 @@ const Footer = () => {
       </div>
 
       <div className="footer-shell">
-        {/* Newsletter / CTA card */}
-        {/* <section className="newsletter-card">
-          <div className="newsletter-left">
-            <p className="footer-kicker">Stay in the loop</p>
-            <h2 className="newsletter-heading">
-              Subscribe to <span>design updates</span>
-            </h2>
-            <p className="newsletter-copy">
-              No spam. Just case studies, product experiments and small design
-              notes a few times a month.
-            </p>
-          </div>
-
-          <form className="newsletter-form" onSubmit={handleSubscribe}>
-            <label className="newsletter-label">
-              <span className="newsletter-label-text">Email address</span>
-              <div className="newsletter-input-shell">
-                <FaEnvelope className="newsletter-input-icon" />
-                <input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="newsletter-input"
-                />
-              </div>
-            </label>
-            <button
-              type="submit"
-              className={`newsletter-btn newsletter-btn-${status}`}
-            >
-              {status === "idle" && (
-                <>
-                  Subscribe
-                  <HiArrowUpRight className="newsletter-btn-icon" />
-                </>
-              )}
-              {status === "sending" && <span className="dot-loader" />}
-              {status === "done" && <span>Joined ✓</span>}
-            </button>
-            <p className="newsletter-meta">
-              By subscribing you agree to the{" "}
-              <button
-                type="button"
-                className="inline-link"
-                onClick={handleScrollToTop}
-              >
-                privacy notes
-              </button>
-              .
-            </p>
-          </form>
-        </section> */}
 
         {/* Main footer content */}
         <section className="footer-main">
@@ -134,22 +82,37 @@ const Footer = () => {
           <div className="footer-columns">
             <div className="footer-column">
               <h4 className="footer-column-title">Explore</h4>
-              <button
+              <Link
+                to="/"
                 className="footer-link-btn"
-                onClick={() => (window.location.href = "/work")}
+                onClick={handleScrollToTop}
+              >
+                Home
+              </Link>
+              <Link
+                to="/work"
+                className="footer-link-btn"
+                onClick={handleScrollToTop}
               >
                 Work
-              </button>
-              <button
+              </Link>
+              <Link
+                to="/about"
                 className="footer-link-btn"
                 onClick={handleScrollToTop}
               >
                 About
-              </button>
-              <button className="footer-link-btn">Process</button>
+              </Link>
+              <Link
+                to="/process"
+                className="footer-link-btn"
+                onClick={handleScrollToTop}
+              >
+                Process
+              </Link>
             </div>
 
-            <div className="footer-column" style={{ position: "relative" , left: "-6rem" }}>
+            <div className="footer-column footer-column-contact">
               <h4 className="footer-column-title">Contact</h4>
               <a
                 href="mailto:rehanaparbin0210@gmail.com"
@@ -160,10 +123,33 @@ const Footer = () => {
               <span className="footer-link muted">
                 Based in India · Remote friendly
               </span>
+              <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  {/* <span className="scan-code">Scan to download resume</span>
+                  <img
+                    src={resumeQR}
+                    alt="qrcode"
+                    style={{ width: '10rem', height: '10rem', objectFit: 'contain', position: 'relative', left: '-2rem' }}
+                  /> */}
+                </div>
+
+
+                <a
+                  href="https://drive.google.com/file/d/1lukj9n9z_l9NBTKAghiJOchmJlcXFYWT/view"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-link-download-btn"
+                >
+                  <FaDownload />
+                  Download Resume
+                </a>
+              </div>
             </div>
 
             <div className="footer-column">
-              <h4 className="footer-column-title">Social</h4>
+              <h4 className="footer-column-title"
+                style={{ position: 'relative', right: '-2rem' }}
+              >Social</h4>
               <div className="footer-social-row">
                 <a
                   href="https://github.com/geniusdev"
@@ -191,8 +177,8 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="footer-social-pill"
                 >
-                  <FaTwitter />
-                  <span>Twitter</span>
+                  <FaBehance />
+                  <span>Behance</span>
                 </a>
                 <a
                   href="https://instagram.com/geniusdev"
@@ -214,7 +200,6 @@ const Footer = () => {
             © {new Date().getFullYear()} Rehana. Crafted with care.
           </p>
           <div className="footer-bottom-right">
-            {/* <span className="footer-meta muted">CET · 24° · Clear sky</span> */}
             <button
               onClick={handleScrollToTop}
               className="back-to-top-chip"
@@ -225,8 +210,8 @@ const Footer = () => {
             </button>
           </div>
         </div>
-      </div>
-    </footer>
+      </div >
+    </footer >
   );
 };
 

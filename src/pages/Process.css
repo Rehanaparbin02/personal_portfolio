@@ -1,0 +1,187 @@
+/* Process.css */
+
+/* Import fonts if not already globally available, though they seem to be in About.css. 
+   We'll assume they are loaded or use fallbacks. */
+
+:root {
+    --process-accent: #1d2342;
+    /* Dark Blue */
+    --process-cream: #f4efe3;
+    /* Cream */
+    --process-highlight: #f39c12;
+    /* Gold/Orange */
+    --font-display: "Bebas Neue", sans-serif;
+    /* Matching About page */
+    --font-body: "Inter", sans-serif;
+}
+
+.process-section {
+    padding: 100px 5%;
+    background-color: transparent;
+    /* Assumes parent background is cream */
+    overflow: hidden;
+}
+
+.process-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.process-container.reveal {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Header */
+.process-header {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.process-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    color: var(--process-accent);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+}
+
+.process-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background-color: var(--process-highlight);
+}
+
+.process-intro {
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    color: var(--process-accent);
+    opacity: 0.8;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.process-intro .highlight {
+    font-weight: 700;
+    color: var(--process-accent);
+    position: relative;
+    z-index: 1;
+}
+
+.process-intro .highlight::before {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: -2px;
+    right: -2px;
+    height: 8px;
+    background-color: rgba(243, 156, 18, 0.3);
+    z-index: -1;
+    transform: skewX(-10deg);
+}
+
+/* Grid */
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+/* Cards */
+.process-card {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 16px;
+    border: 1px solid rgba(29, 35, 66, 0.1);
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.process-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(29, 35, 66, 0.15);
+    border-color: var(--process-accent);
+}
+
+.card-number {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    color: rgba(29, 35, 66, 0.05);
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    line-height: 1;
+    transition: all 0.4s ease;
+}
+
+.process-card:hover .card-number {
+    color: rgba(243, 156, 18, 0.2);
+    transform: scale(1.1);
+}
+
+.card-content {
+    position: relative;
+    z-index: 2;
+}
+
+.card-title {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    color: var(--process-accent);
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.card-subtitle {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--process-highlight);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.card-description {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--process-accent);
+    line-height: 1.7;
+    opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .process-section {
+        padding: 60px 20px;
+    }
+
+    .process-title {
+        font-size: 3rem;
+    }
+
+    .process-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .process-card {
+        padding: 30px 25px;
+    }
+}

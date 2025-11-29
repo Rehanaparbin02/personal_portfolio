@@ -36,11 +36,9 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    155deg,
-    transparent 0%,
-    rgba(244, 239, 227, 0.03) 100%
-  );
+  background: linear-gradient(155deg,
+      transparent 0%,
+      rgba(244, 239, 227, 0.03) 100%);
   pointer-events: none;
 }
 
@@ -59,34 +57,44 @@
 }
 
 @keyframes noise {
+
   0%,
   100% {
     transform: translate(0, 0);
   }
+
   10% {
     transform: translate(-5%, -5%);
   }
+
   20% {
     transform: translate(-10%, 5%);
   }
+
   30% {
     transform: translate(5%, -10%);
   }
+
   40% {
     transform: translate(-5%, 15%);
   }
+
   50% {
     transform: translate(-10%, 5%);
   }
+
   60% {
     transform: translate(15%, 0);
   }
+
   70% {
     transform: translate(0, 10%);
   }
+
   80% {
     transform: translate(-15%, 0);
   }
+
   90% {
     transform: translate(10%, 5%);
   }
@@ -230,23 +238,23 @@
 }
 
 .home-description {
-  font-size: clamp(1rem, 2vw, 3.25rem);
+  font-size: clamp(1rem, 2vw, 1.4rem);
   color: #1d2342;
   max-width: 1000px;
   text-align: center;
   line-height: 1.8;
   font-family: Arial, sans-serif;
   margin: 0 auto;
-  margin-top: 0px;
+  margin-top: 4rem;
   padding: 0 2rem;
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  margin-top: 4rem;
 }
 
+/* Highlights inside the text */
 .description-highlight {
   font-weight: bold;
   position: relative;
@@ -271,15 +279,11 @@
   position: relative;
   cursor: pointer;
   background: linear-gradient(to right, #1d2342 50%, transparent 50%);
-  background-position-x: 0%;
-  background-position-y: 0%;
-  background-size: auto;
   background-size: 200% 100%;
   background-position: 100% 0;
   transition: background-position 0.5s ease, color 0.5s ease;
   padding: 0 2px;
   margin: 0 12px;
-  left: 0rem;
 }
 
 .description-emphasis:hover {
@@ -287,16 +291,19 @@
   color: #f4efe3;
 }
 
+/* Cards (mobile-first: stacked, centered) */
 .des-rec-1,
 .des-rec-2 {
   background-color: #fbf8e55e;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 1.75rem;
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 15px;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 100%;
+  align-self: stretch;
 }
 
 .des-rec-1:hover,
@@ -305,44 +312,25 @@
   box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
 }
 
-/* Alternating alignment for visual interest */
-.des-rec-1 {
-  align-self: flex-start;
-  max-width: 100%;
-  position: relative;
-  right: 22rem;
-  padding: 2rem 4rem 2rem 4rem;
-}
-
-.des-rec-2 {
-  align-self: flex-start;
-  max-width: 88%;
-  position: relative;
-  right: -29rem;
-  bottom: 22rem;
-  padding: 2rem 4rem 2rem 4rem;
-}
-
-/* Rectangles */
-.rec1 {
-  background-color: #1d2342;
-  height: 2rem;
-  width: 90%;
-  max-width: 800px;
-  position: relative;
-  margin-bottom: 2rem;
-  border-radius: 2px;
-}
-
+/* Rectangles above and below */
+.rec1,
 .rec2 {
   background-color: #1d2342;
   height: 2rem;
   width: 90%;
   max-width: 800px;
   position: relative;
-  margin-top: -14rem;
   border-radius: 2px;
 }
+
+.rec1 {
+  margin-bottom: 2rem;
+}
+
+.rec2 {
+  margin-top: 2rem;
+}
+
 
 /* Bento Grid Section */
 .bento-section {
@@ -354,7 +342,7 @@
   transform: translateY(50px);
   transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1),
     transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .bento-section.visible {
@@ -449,6 +437,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -460,6 +449,7 @@
     opacity: 0;
     transform: translateX(-50px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -471,6 +461,7 @@
     opacity: 0;
     transform: translateX(50px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -482,6 +473,7 @@
     opacity: 0;
     transform: scale(0.8);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -493,6 +485,7 @@
     opacity: 0;
     transform: rotate(-5deg) scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: rotate(0) scale(1);
@@ -504,11 +497,13 @@
     opacity: 0;
     transform: perspective(1000px) rotateY(-20deg);
   }
+
   to {
     opacity: 1;
     transform: perspective(1000px) rotateY(0);
   }
 }
+
 /* Shared CTA style for bento 1 & 5 */
 .bento-item-cta {
   position: relative;
@@ -528,7 +523,8 @@
   width: 96px;
   height: 96px;
   border-radius: 50%;
-  background: #f4efe3; /* same as page background */
+  background: #f4efe3;
+  /* same as page background */
   bottom: -48px;
   right: -48px;
   pointer-events: none;
@@ -610,6 +606,7 @@
 
 /* Keep 1 & 5 grid spans, just ensure they look good on mobile */
 @media (max-width: 968px) {
+
   .bento-item-1,
   .bento-item-5 {
     grid-column: span 3;
@@ -723,6 +720,7 @@
     opacity: 0;
     transform: translateX(-100px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -734,6 +732,7 @@
     opacity: 0;
     transform: translateX(100px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -745,6 +744,7 @@
     opacity: 0;
     transform: scale(0);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -756,6 +756,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -763,9 +764,96 @@
 }
 
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
+/* ========== 320–480: Mobile ========== */
+@media (max-width: 480px) {
+  .home-description {
+    padding: 0 1rem;
+    font-size: 0.95rem;
+    gap: 1.5rem;
+  }
+
+  .des-rec-1,
+  .des-rec-2 {
+    padding: 1.1rem 1.2rem;
+  }
+
+  .rec1,
+  .rec2 {
+    width: 95%;
+    height: 1.5rem;
+  }
+}
+
+/* ========== 481–960: Tablet ========== */
+@media (min-width: 481px) and (max-width: 960px) {
+  .home-description {
+    padding: 0 2rem;
+    font-size: 1.05rem;
+    gap: 2rem;
+  }
+
+  .des-rec-1,
+  .des-rec-2 {
+    max-width: 95%;
+    align-self: center;
+    padding: 1.4rem 1.8rem;
+  }
+
+  .rec1,
+  .rec2 {
+    width: 90%;
+    margin-inline: auto;
+  }
+}
+
+/* ========== 961–1199: Desktop ========== */
+@media (min-width: 961px) and (max-width: 1199px) {
+  .home-description {
+    font-size: 1.1rem;
+    gap: 2.4rem;
+  }
+
+  .des-rec-1,
+  .des-rec-2 {
+    max-width: 80%;
+    align-self: center;
+    padding: 1.8rem 2.5rem;
+  }
+}
+
+/* ========== 1200+: Large Desktop (staggered look) ========== */
+@media (min-width: 1200px) {
+  .home-description {
+    font-size: 1.8rem;
+  }
+
+  /* recreate your offset / staggered feel, but less extreme */
+  .des-rec-1 {
+    max-width: 70%;
+    align-self: flex-start;
+    transform-origin: left center;
+    position: relative;
+    left: -8rem;
+  }
+
+  .des-rec-2 {
+    max-width: 70%;
+    align-self: flex-end;
+    margin-top: -3rem;
+    transform-origin: right center;
+    position: relative;
+    top: -12rem;
+    right: -12rem;
+  }
+
+  .rec2 {
+    margin-top: -6rem;
+  }
+}
 
 /* Large tablets / small laptops */
 @media (max-width: 1200px) {
+
   .des-rec-1,
   .des-rec-2 {
     right: 0;
@@ -788,6 +876,7 @@
 
 /* Tablets */
 @media (max-width: 968px) {
+
   .home-line-3,
   .amp {
     margin-left: 8rem;
