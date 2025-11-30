@@ -103,13 +103,13 @@ const Footer = () => {
               >
                 About
               </Link>
-              <Link
+              {/* <Link
                 to="/process"
                 className="footer-link-btn"
                 onClick={handleScrollToTop}
               >
                 Process
-              </Link>
+              </Link> */}
             </div>
 
             <div className="footer-column footer-column-contact">

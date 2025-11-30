@@ -2,6 +2,22 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
 import ScrollReveal from '../components/ScrollReveal';
+import './Process.css';
+
+
+// Same capabilities marquee items as in Process
+const marqueeItems = [
+  'User Research',
+  'Product Thinking',
+  'Information Architecture',
+  'Interaction Design',
+  'Design Systems',
+  'Prototyping',
+  'Frontend Engineering',
+  'Microinteractions',
+  'Performance',
+  'Accessibility',
+];
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -86,6 +102,43 @@ const Home = () => {
     navigate('/work');
   };
 
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  // Parallax cursor-follow for bento items
+  const handleBentoMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const midX = rect.width / 2;
+    const midY = rect.height / 2;
+
+    const rotateMax = 8; // how strong the tilt feels
+
+    const rotateY = ((x - midX) / midX) * rotateMax; // left/right
+    const rotateX = ((y - midY) / midY) * -rotateMax; // up/down (invert)
+
+    card.style.transform = `
+      translateY(-8px)
+      scale(1.03)
+      rotateX(${rotateX.toFixed(2)}deg)
+      rotateY(${rotateY.toFixed(2)}deg)
+    `;
+  };
+
+  const handleBentoMouseLeave = (e) => {
+    const card = e.currentTarget;
+    // Reset to whatever CSS/animation has defined as default
+    card.style.transform = '';
+  };
+
   return (
     <section
       className="home"
@@ -148,6 +201,30 @@ const Home = () => {
         </div>
       </div>
 
+      {/* NEW – infinite marquee like in Process */}
+      <div className="home-marquee-block" style={{ overflow: 'hidden', maxWidth: '117rem' }}>
+        <div className="process-marquee" style={{ width: '117rem' }}>
+          <div className="process-marquee__fade process-marquee__fade--left" />
+          <div className="process-marquee__track">
+            <div className="process-marquee__inner">
+              {marqueeItems.map((item) => (
+                <span key={item} className="process-pill">
+                  {item}
+                </span>
+              ))}
+            </div>
+            <div className="process-marquee__inner process-marquee__inner--clone">
+              {marqueeItems.map((item) => (
+                <span key={`${item}-clone`} className="process-pill">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="process-marquee__fade process-marquee__fade--right" />
+        </div>
+      </div>
+
       <div className="description-section" ref={descriptionRef}>
         <div className="rec1"></div>
 
@@ -170,7 +247,7 @@ const Home = () => {
             }}
           >
             <span className="description-highlight">
-              I'm a UI/UX designer and developer
+              I&apos;m a UI/UX designer and developer
             </span>{' '}
             who turns ideas into
             <span className="description-emphasis">
@@ -213,8 +290,11 @@ const Home = () => {
         <div className="bento-grid">
           {/* BENTO 1 – KOA style metric card with arrow */}
           <div
-            className={`bento-item bento-item-1 bento-item-cta ${isBentoVisible ? 'animate' : ''
-              }`}
+            className={`bento-item bento-item-1 bento-item-cta ${
+              isBentoVisible ? 'animate' : ''
+            }`}
+            onMouseMove={handleBentoMouseMove}
+            onMouseLeave={handleBentoMouseLeave}
           >
             <div className="bento-cta-copy">
               <span className="bento-cta-kicker">KOA case study</span>
@@ -228,21 +308,41 @@ const Home = () => {
               type="button"
               className="bento-arrow-btn"
               aria-label="Open project showcase"
-              onClick={() => navigate('/projectshowcase')}
+              onClick={() => {
+                handleScrollToTop();
+                navigate('/Work');
+              }}
             >
               ↗
             </button>
           </div>
 
           {/* BENTO 2–4 stay as normal blocks (you can fill them later) */}
-          <div className={`bento-item bento-item-2 ${isBentoVisible ? 'animate' : ''}`}></div>
-          <div className={`bento-item bento-item-3 ${isBentoVisible ? 'animate' : ''}`}></div>
-          <div className={`bento-item bento-item-4 ${isBentoVisible ? 'animate' : ''}`}></div>
+          <div
+            className={`bento-item bento-item-2 ${isBentoVisible ? 'animate' : ''}`}
+            onMouseMove={handleBentoMouseMove}
+            onMouseLeave={handleBentoMouseLeave}
+          ></div>
+
+          <div
+            className={`bento-item bento-item-3 ${isBentoVisible ? 'animate' : ''}`}
+            onMouseMove={handleBentoMouseMove}
+            onMouseLeave={handleBentoMouseLeave}
+          ></div>
+
+          <div
+            className={`bento-item bento-item-4 ${isBentoVisible ? 'animate' : ''}`}
+            onMouseMove={handleBentoMouseMove}
+            onMouseLeave={handleBentoMouseLeave}
+          ></div>
 
           {/* BENTO 5 – another CTA tile, same style */}
           <div
-            className={`bento-item bento-item-5 bento-item-cta ${isBentoVisible ? 'animate' : ''
-              }`}
+            className={`bento-item bento-item-5 bento-item-cta ${
+              isBentoVisible ? 'animate' : ''
+            }`}
+            onMouseMove={handleBentoMouseMove}
+            onMouseLeave={handleBentoMouseLeave}
           >
             <div className="bento-cta-copy">
               <span className="bento-cta-kicker">Zenflow journal</span>
@@ -256,13 +356,20 @@ const Home = () => {
               type="button"
               className="bento-arrow-btn"
               aria-label="Open project showcase"
-              onClick={() => navigate('/projectshowcase')}
+              onClick={() => {
+                handleScrollToTop();
+                navigate('/Work');
+              }}
             >
               ↗
             </button>
           </div>
 
-          <div className={`bento-item bento-item-6 ${isBentoVisible ? 'animate' : ''}`}></div>
+          <div
+            className={`bento-item bento-item-6 ${isBentoVisible ? 'animate' : ''}`}
+            onMouseMove={handleBentoMouseMove}
+            onMouseLeave={handleBentoMouseLeave}
+          ></div>
         </div>
 
         {/* SEE MORE BUTTON BELOW BENTO */}
@@ -273,9 +380,6 @@ const Home = () => {
           </button>
         </div>
       </div>
-
-
-
     </section>
   );
 };
