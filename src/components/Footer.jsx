@@ -135,7 +135,7 @@ const Footer = () => {
 
 
                 <a
-                  href="https://drive.google.com/file/d/1lukj9n9z_l9NBTKAghiJOchmJlcXFYWT/view"
+                  href="https://drive.google.com/file/d/1rPwUAyi64UDZg_W1bIyEIIpZWTjqt72b/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="footer-link-download-btn"

@@ -1,0 +1,108 @@
+/* Home_banner.css – mirror the modern status pill */
+
+.construction-banner {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.construction-pill {
+  margin-top: 0.25rem;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.48), transparent 55%),
+    linear-gradient(135deg, #1d2342, #ff4d4d, #1d2342);
+  background-size: 200% 200%;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+  color: #f4efe3;
+  font-family: Arial, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  animation: bannerShimmer 12s ease-in-out infinite;
+  backdrop-filter: blur(12px);
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #7bff9f;
+  box-shadow: 0 0 0 0 rgba(123, 255, 159, 0.7);
+  animation: statusPulse 2.2s infinite;
+}
+
+.status-label {
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.status-text {
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.status-cta {
+  border: none;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(244, 239, 227, 0.12);
+  color: #f4efe3;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.status-cta:hover {
+  transform: translateY(-1px);
+  background: rgba(244, 239, 227, 0.22);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes bannerShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes statusPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(123, 255, 159, 0.5);
+  }
+
+  70% {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 10px rgba(123, 255, 159, 0);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(123, 255, 159, 0);
+  }
+}

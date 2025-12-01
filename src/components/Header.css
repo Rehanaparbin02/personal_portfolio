@@ -58,7 +58,7 @@ body {
   left: 0;
 }
 
-/* Contact Button (Desktop) */
+/* Magnetic Contact Button */
 .contact-btn {
   background-color: #f4efe3;
   color: #1d2342;
@@ -68,8 +68,25 @@ body {
   border: none;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  border-radius: 50px;
+  position: relative;
+  z-index: 3;
+  display: inline-block;
+  will-change: transform;
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
+
+.contact-btn:hover {
+  background-color: #fff;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+.contact-btn:active {
+  transform: scale(0.96);
+}
+
 
 .contact-btn:hover {
   background-color: #dcd6c2;

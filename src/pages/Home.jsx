@@ -4,32 +4,55 @@ import './Home.css';
 import ScrollReveal from '../components/ScrollReveal';
 import './Process.css';
 
-
 // Same capabilities marquee items as in Process
-const marqueeItems = [
-  'User Research',
-  'Product Thinking',
-  'Information Architecture',
+// UI/UX design focused
+const uiUxMarqueeItems = [
+  'Animated Dashboards',
+  'Gradient Themes',
+  'Neobrutalist UI',
   'Interaction Design',
   'Design Systems',
-  'Prototyping',
-  'Frontend Engineering',
   'Microinteractions',
-  'Performance',
-  'Accessibility',
+  'Accessible Interfaces',
+  'Product Thinking',
+  'Visual Storytelling',
+  'Motion Systems',
 ];
+
+// Mobile & app development focused
+const mobileMarqueeItems = [
+  'React Native Apps',
+  'Cross-Platform Mobile',
+  'Supabase Backends',
+  'Real-Time Sync',
+  'Offline-First Flows',
+  'Secure Auth',
+  'Budgeting Tools',
+  'Productivity Systems',
+  'Emotion Journals',
+  'Android Performance',
+];
+
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isDescriptionVisible, setIsDescriptionVisible] = useState(false);
   const [isBentoVisible, setIsBentoVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [marqueeSpeed, setMarqueeSpeed] = useState(1); // scroll-velocity factor
 
   const containerRef = useRef(null);
   const descriptionRef = useRef(null);
   const bentoRef = useRef(null);
+  const bannerCtaRef = useRef(null);
 
   const navigate = useNavigate();
+  const baseMarqueeDurationPrimary = 26;  // UI/UX row
+  const baseMarqueeDurationSecondary = 32; // mobile row
+
+  const primaryDuration = baseMarqueeDurationPrimary / marqueeSpeed;
+  const secondaryDuration =
+    baseMarqueeDurationSecondary / (0.8 * marqueeSpeed + 0.2);
 
   useEffect(() => {
     // Trigger fade-in animation after component mounts
@@ -51,7 +74,7 @@ const Home = () => {
       },
       {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: '0px 0px -50px 0px',
       }
     );
 
@@ -79,7 +102,7 @@ const Home = () => {
       },
       {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: '0px 0px -50px 0px',
       }
     );
 
@@ -95,6 +118,48 @@ const Home = () => {
     };
   }, []);
 
+  // Scroll-velocity based marquee speed (smoothed)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    let lastY = window.scrollY;
+    let lastT = performance.now();
+    let targetSpeed = 1; // where we want to go
+
+    const handleScroll = () => {
+      const now = performance.now();
+      const y = window.scrollY;
+
+      const dy = Math.abs(y - lastY);
+      const dt = now - lastT || 16;
+
+      const velocity = dy / dt; // px per ms
+      // Map to 0–2 range, then +1 → 1x–3x
+      const normalized = Math.min(velocity * 40, 2);
+      targetSpeed = 1 + normalized;
+
+      lastY = y;
+      lastT = now;
+    };
+
+    // Smoothly ease marqueeSpeed toward targetSpeed (no jumps)
+    const interval = setInterval(() => {
+      setMarqueeSpeed((prev) => {
+        const easing = 0.12; // smaller = smoother, slower change
+        const next = prev + (targetSpeed - prev) * easing;
+        return next;
+      });
+    }, 40); // ~25fps is enough for smoothness
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearInterval(interval);
+    };
+  }, []);
+
+
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
 
@@ -105,7 +170,7 @@ const Home = () => {
   const handleScrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   };
 
@@ -139,6 +204,54 @@ const Home = () => {
     card.style.transform = '';
   };
 
+  const handleBannerCTA = () => {
+    if (bentoRef.current) {
+      bentoRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  };
+
+  // Magnetic CTA logic
+  const handleBannerCTAMouseMove = (e) => {
+    const btn = bannerCtaRef.current;
+    if (!btn) return;
+
+    const rect = btn.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const x = e.clientX - centerX;
+    const y = e.clientY - centerY;
+
+    const distance = Math.sqrt(x * x + y * y);
+    const maxDistance = 140; // px range where magnet kicks in
+
+    if (distance > maxDistance) {
+      btn.style.transform = 'translate3d(0, 0, 0)';
+      btn.style.boxShadow = '';
+      return;
+    }
+
+    const strength = 1 - distance / maxDistance; // 0 → 1
+    const moveX = (x / rect.width) * 16 * strength; // max ~16px
+    const moveY = (y / rect.height) * 16 * strength;
+
+    btn.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+    btn.style.boxShadow = '0 12px 30px rgba(0,0,0,0.35)';
+  };
+
+  const handleBannerCTAMouseLeave = () => {
+    const btn = bannerCtaRef.current;
+    if (!btn) return;
+    btn.style.transform = 'translate3d(0, 0, 0)';
+    btn.style.boxShadow = '';
+  };
+
+  const baseMarqueeDuration = 22; // seconds at rest
+  const marqueeDuration = baseMarqueeDuration / marqueeSpeed;
+
   return (
     <section
       className="home"
@@ -146,9 +259,32 @@ const Home = () => {
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
         transition:
-          'opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)'
+          'opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
       }}
     >
+      {/* MODERN INTERACTIVE HOME BANNER */}
+      <div className="construction-banner">
+        <div
+          className="construction-pill"
+          onMouseMove={handleBannerCTAMouseMove}
+          onMouseLeave={handleBannerCTAMouseLeave}
+        >
+          <span className="status-dot" />
+          <span className="status-label">Live beta</span>
+          <span className="status-text">
+            Portfolio v0.9 · polishing micro-interactions & case studies
+          </span>
+          <button
+            type="button"
+            className="status-cta"
+            ref={bannerCtaRef}
+            onClick={handleBannerCTA}
+          >
+            View featured work ↗
+          </button>
+        </div>
+      </div>
+
       <div
         className={`home-container ${isHovered ? 'container-hovered' : ''}`}
         ref={containerRef}
@@ -158,7 +294,7 @@ const Home = () => {
           opacity: isVisible ? 1 : 0,
           transform: isVisible ? 'scale(1)' : 'scale(0.95)',
           transition:
-            'opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s, transform 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s, box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+            'opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s, transform 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s, box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
         <div className="noise-overlay"></div>
@@ -201,98 +337,147 @@ const Home = () => {
         </div>
       </div>
 
-      {/* NEW – infinite marquee like in Process */}
-      <div className="home-marquee-block" style={{ overflow: 'hidden', maxWidth: '117rem' }}>
-        <div className="process-marquee" style={{ width: '117rem' }}>
-          <div className="process-marquee__fade process-marquee__fade--left" />
-          <div className="process-marquee__track">
-            <div className="process-marquee__inner">
-              {marqueeItems.map((item) => (
-                <span key={item} className="process-pill">
-                  {item}
-                </span>
-              ))}
-            </div>
-            <div className="process-marquee__inner process-marquee__inner--clone">
-              {marqueeItems.map((item) => (
-                <span key={`${item}-clone`} className="process-pill">
-                  {item}
-                </span>
-              ))}
-            </div>
+      {/* Dual marquee – UI/UX row + Mobile/App row */}
+      <div className="home-marquee-block">
+        {/* Row 1: UI/UX design */}
+        <div className="home-marquee-row" style={{ backgroundColor: '#1d2342' }}>
+          <div
+            className="home-marquee-track"
+            style={{ animationDuration: `${primaryDuration}s` }}
+          >
+            {uiUxMarqueeItems.map((item) => (
+              <span key={item} className="home-marquee-text" style={{ color: '#f9f0de' }}>
+                {item} •
+              </span>
+            ))}
+            {uiUxMarqueeItems.map((item) => (
+              <span key={item + '-clone'} className="home-marquee-text" style={{ color: '#f9f0de' }}>
+                {item} •
+              </span>
+            ))}
           </div>
-          <div className="process-marquee__fade process-marquee__fade--right" />
+        </div>
+
+        {/* Row 2: Mobile & app development */}
+        <div className="home-marquee-row home-marquee-row--secondary" style={{ backgroundColor: '#f9f0de', border: '1px solid #1d2342' }}>
+          <div
+            className="home-marquee-track home-marquee-track--secondary"
+            style={{ animationDuration: `${secondaryDuration}s` }}
+          >
+            {mobileMarqueeItems.map((item) => (
+              <span key={item} className="home-marquee-text" style={{ color: '#1d2342' }}>
+                {item} •
+              </span>
+            ))}
+            {mobileMarqueeItems.map((item) => (
+              <span key={item + '-clone'} className="home-marquee-text" style={{ color: '#1d2342' }}>
+                {item} •
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="description-section" ref={descriptionRef}>
-        <div className="rec1"></div>
 
-        <p
-          className="home-description"
+      <div className="description-section" ref={descriptionRef}>
+        <div
+          className="description-shell"
           style={{
             opacity: isDescriptionVisible ? 1 : 0,
-            transform: isDescriptionVisible ? 'translateY(0)' : 'translateY(40px)',
+            transform: isDescriptionVisible ? 'translateY(0)' : 'translateY(30px)',
             transition:
-              'opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)'
+              'opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1)',
           }}
         >
-          <div
-            className="des-rec-1"
-            style={{
-              opacity: isDescriptionVisible ? 1 : 0,
-              transform: isDescriptionVisible ? 'translateX(0)' : 'translateX(-50px)',
-              transition:
-                'opacity 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s, transform 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s'
-            }}
-          >
-            <span className="description-highlight">
-              I&apos;m a UI/UX designer and developer
-            </span>{' '}
-            who turns ideas into
-            <span className="description-emphasis">
-              {' '}
-              clean, functional, and visually sharp
-            </span>{' '}
-            digital experiences. Design, code, and creativity — all in one workflow to make
-            interfaces that
-            <span className="description-emphasis">
-              {' '}
-              work as good as they look.
-            </span>
+          {/* top row */}
+          <div className="description-top">
+            <span className="description-top-label">ABOUT THE BLEND</span>
+
+            <h2 className="description-top-heading-vertical">
+              <span className="description-top-small-vertical">DESIGN THINKING</span>
+
+            </h2>
+
+            <h2 className="description-top-heading-horizontal">
+              <span className="description-top-small-horizontal">MEETS SHIPPING CODE.</span>
+            </h2>
+
+            <p className="description-top-copy">
+              I work across <span>product, visual and front-end</span> so ideas don&apos;t get
+              lost between Figma and production.
+            </p>
           </div>
 
+          {/* second row: vertical word + blue cards */}
           <div
-            className="des-rec-2"
+            className="description-main"
             style={{
               opacity: isDescriptionVisible ? 1 : 0,
-              transform: isDescriptionVisible ? 'translateY(0)' : 'translateY(30px)',
+              transform: isDescriptionVisible ? 'translateY(0)' : 'translateY(20px)',
               transition:
-                'opacity 1s cubic-bezier(0.4, 0, 0.2, 1) 0.6s, transform 1s cubic-bezier(0.4, 0, 0.2, 1) 0.6s'
+                'opacity 0.8s cubic-bezier(0.4,0,0.2,1) 0.05s, transform 0.8s cubic-bezier(0.4,0,0.2,1) 0.05s',
             }}
           >
-            I see the code as a <span className="description-highlight">means</span> , not an
-            end. What truly motivates me is translating difficult, messy problems into{' '}
-            <span className="description-highlight">impeccably designed and effortlessly</span>{' '}
-            <span className="description-highlight">
-              functional digital experiences
-            </span>
-          </div>
-        </p>
 
-        <div className="rec2"></div>
+            <div className="description-cards-row">
+              <div
+                className="description-card"
+                style={{
+                  opacity: isDescriptionVisible ? 1 : 0,
+                  transform: isDescriptionVisible ? 'translateY(0)' : 'translateY(24px)',
+                  transition:
+                    'opacity 0.7s cubic-bezier(0.4,0,0.2,1) 0.15s, transform 0.7s cubic-bezier(0.4,0,0.2,1) 0.15s',
+                }}
+              >
+                <p className="description-card-1">
+                  Hi, I’m Rehana — the person who loves turning “what if…” into “oh wow, this actually works.” I design and
+                  build digital experiences that feel clean, intuitive, and quietly powerful. Think of me as someone who
+                  speaks both languages — the visual poetry of UI/UX and the logical precision of full-stack development.
+                  I sketch ideas, shape interactions, architect systems, and then bring it all to life in code.
+                </p>
+              </div>
+
+              <div
+                className="description-card"
+                style={{
+                  opacity: isDescriptionVisible ? 1 : 0,
+                  transform: isDescriptionVisible ? 'translateY(0)' : 'translateY(24px)',
+                  transition:
+                    'opacity 0.7s cubic-bezier(0.4,0,0.2,1) 0.25s, transform 0.7s cubic-bezier(0.4,0,0.2,1) 0.25s',
+                }}
+              >
+                <p className="description-card-2">
+                  To me, code isn’t the destination — it’s the vehicle. What excites me is taking messy, complex problems and
+                  transforming them into smooth, beautifully engineered products that feel effortless for the user. Natural
+                  interactions, scalable backends, motion-rich mobile interfaces, offline-ready workflows — I love building
+                  things that not only look great but behave great. My mission is simple: to create digital experiences that
+                  work beautifully, feel seamless, and make people think, “yes — this is exactly how it should be.”
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+
+
+
 
       <div
         ref={bentoRef}
         className={`bento-section ${isBentoVisible ? 'visible' : ''}`}
       >
+        <div className="bento-header-main">
+          <div className="bento-title">WORK</div>
+          <div className="bento-header-subtitle">Designed to Feel. Built to </div>
+          <div className="bento-header-subtitle-leftover">Perform.</div>
+        </div>
         <div className="bento-grid">
+
           {/* BENTO 1 – KOA style metric card with arrow */}
           <div
-            className={`bento-item bento-item-1 bento-item-cta ${
-              isBentoVisible ? 'animate' : ''
-            }`}
+            className={`bento-item bento-item-1 bento-item-cta ${isBentoVisible ? 'animate' : ''
+              }`}
             onMouseMove={handleBentoMouseMove}
             onMouseLeave={handleBentoMouseLeave}
           >
@@ -302,12 +487,21 @@ const Home = () => {
                 <span className="bento-cta-metric">x2</span>
                 <span className="bento-cta-sub">conversion rate</span>
               </div>
+              <p className="bento-cta-description">
+                Reimagined onboarding and pricing to reduce friction and make value obvious in the
+                first 30 seconds.
+              </p>
+              <div className="bento-tag-row">
+                <span className="bento-tag">SaaS</span>
+                <span className="bento-tag">Onboarding</span>
+                <span className="bento-tag">A/B testing</span>
+              </div>
             </div>
 
             <button
               type="button"
               className="bento-arrow-btn"
-              aria-label="Open project showcase"
+              aria-label="Open KOA project"
               onClick={() => {
                 handleScrollToTop();
                 navigate('/Work');
@@ -317,30 +511,102 @@ const Home = () => {
             </button>
           </div>
 
-          {/* BENTO 2–4 stay as normal blocks (you can fill them later) */}
+          {/* BENTO 2 – case study list / mock data */}
           <div
             className={`bento-item bento-item-2 ${isBentoVisible ? 'animate' : ''}`}
             onMouseMove={handleBentoMouseMove}
             onMouseLeave={handleBentoMouseLeave}
-          ></div>
+          >
+            <div className="bento-heading-row">
+              <span className="bento-pill-label">Selected work</span>
+              <span className="bento-pill-badge">3 live · 2 in progress</span>
+            </div>
 
+            <ul className="bento-list">
+              <li>
+                <div className="bento-list-title">Zenflow – mindful journaling app</div>
+                <div className="bento-list-meta">
+                  Product design · Mobile · +40% daily retention
+                </div>
+              </li>
+              <li>
+                <div className="bento-list-title">Koa – subscription analytics dashboard</div>
+                <div className="bento-list-meta">
+                  UX overhaul · Web · x2 conversion from trial → paid
+                </div>
+              </li>
+              <li>
+                <div className="bento-list-title">Studio Orbit – portfolio system</div>
+                <div className="bento-list-meta">
+                  Design systems · Frontend engineering · React
+                </div>
+              </li>
+            </ul>
+
+            <div className="bento-footer-note">
+              Built with a design-systems mindset, shipped with production-ready code.
+            </div>
+          </div>
+
+          {/* BENTO 3 – toolstack / skills */}
           <div
             className={`bento-item bento-item-3 ${isBentoVisible ? 'animate' : ''}`}
             onMouseMove={handleBentoMouseMove}
             onMouseLeave={handleBentoMouseLeave}
-          ></div>
+          >
+            <div className="bento-heading-row">
+              <span className="bento-pill-label">Toolstack</span>
+            </div>
 
+            <div className="bento-multi-metric">
+              <div className="bento-metric-item">
+                <span className="bento-metric-label">Design</span>
+                <span className="bento-metric-value">Figma · Framer</span>
+              </div>
+              <div className="bento-metric-item">
+                <span className="bento-metric-label">Frontend</span>
+                <span className="bento-metric-value">React · TypeScript</span>
+              </div>
+              <div className="bento-metric-item">
+                <span className="bento-metric-label">Systems</span>
+                <span className="bento-metric-value">Design tokens · DS</span>
+              </div>
+            </div>
+
+            <div className="bento-tag-row tight">
+              <span className="bento-tag">Microinteractions</span>
+              <span className="bento-tag">Accessibility</span>
+              <span className="bento-tag">Performance-first</span>
+            </div>
+          </div>
+
+          {/* BENTO 4 – “currently” / focus */}
           <div
             className={`bento-item bento-item-4 ${isBentoVisible ? 'animate' : ''}`}
             onMouseMove={handleBentoMouseMove}
             onMouseLeave={handleBentoMouseLeave}
-          ></div>
+          >
+            <div className="bento-heading-row">
+              <span className="bento-pill-label">Currently</span>
+            </div>
+
+            <ul className="bento-list current-list">
+              <li>
+                Shipping a <strong>mini design system</strong> for this portfolio.
+              </li>
+              <li>
+                Exploring <strong>motion as feedback</strong>, not decoration.
+              </li>
+              <li>
+                Iterating on <strong>case studies</strong> that show thinking, not just shots.
+              </li>
+            </ul>
+          </div>
 
           {/* BENTO 5 – another CTA tile, same style */}
           <div
-            className={`bento-item bento-item-5 bento-item-cta ${
-              isBentoVisible ? 'animate' : ''
-            }`}
+            className={`bento-item bento-item-5 bento-item-cta ${isBentoVisible ? 'animate' : ''
+              }`}
             onMouseMove={handleBentoMouseMove}
             onMouseLeave={handleBentoMouseLeave}
           >
@@ -350,12 +616,21 @@ const Home = () => {
                 <span className="bento-cta-metric">+40%</span>
                 <span className="bento-cta-sub">daily retention</span>
               </div>
+              <p className="bento-cta-description">
+                Reduced cognitive load with calmer flows, better empty states and gentle nudges to
+                build a daily habit.
+              </p>
+              <div className="bento-tag-row">
+                <span className="bento-tag">Mobile</span>
+                <span className="bento-tag">Behavioural design</span>
+                <span className="bento-tag">Dark mode</span>
+              </div>
             </div>
 
             <button
               type="button"
               className="bento-arrow-btn"
-              aria-label="Open project showcase"
+              aria-label="Open Zenflow project"
               onClick={() => {
                 handleScrollToTop();
                 navigate('/Work');
@@ -365,11 +640,48 @@ const Home = () => {
             </button>
           </div>
 
+          {/* BENTO 6 – process snapshot / timeline */}
           <div
             className={`bento-item bento-item-6 ${isBentoVisible ? 'animate' : ''}`}
             onMouseMove={handleBentoMouseMove}
             onMouseLeave={handleBentoMouseLeave}
-          ></div>
+          >
+            <div className="bento-heading-row">
+              <span className="bento-pill-label">Process snapshot</span>
+              <span className="bento-pill-badge">End-to-end</span>
+            </div>
+
+            <div className="bento-process">
+              <div className="bento-process-step">
+                <span className="bento-process-index">01</span>
+                <div className="bento-process-copy">
+                  <span className="bento-process-title">Understand</span>
+                  <span className="bento-process-meta">users, constraints & metrics</span>
+                </div>
+              </div>
+              <div className="bento-process-step">
+                <span className="bento-process-index">02</span>
+                <div className="bento-process-copy">
+                  <span className="bento-process-title">Explore</span>
+                  <span className="bento-process-meta">flows, states & information</span>
+                </div>
+              </div>
+              <div className="bento-process-step">
+                <span className="bento-process-index">03</span>
+                <div className="bento-process-copy">
+                  <span className="bento-process-title">Refine</span>
+                  <span className="bento-process-meta">design systems & microcopy</span>
+                </div>
+              </div>
+              <div className="bento-process-step">
+                <span className="bento-process-index">04</span>
+                <div className="bento-process-copy">
+                  <span className="bento-process-title">Ship</span>
+                  <span className="bento-process-meta">production-ready front-end</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* SEE MORE BUTTON BELOW BENTO */}

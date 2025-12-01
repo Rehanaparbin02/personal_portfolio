@@ -75,3 +75,6 @@ coverage/
 
 # Bundle analyzer
 stats.html
+
+# Local Netlify folder
+.netlify

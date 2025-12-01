@@ -39,19 +39,6 @@ const processSteps = [
   },
 ];
 
-const marqueeItems = [
-  'User Research',
-  'Product Thinking',
-  'Information Architecture',
-  'Interaction Design',
-  'Design Systems',
-  'Prototyping',
-  'Frontend Engineering',
-  'Microinteractions',
-  'Performance',
-  'Accessibility',
-];
-
 const whatIDoItems = [
   {
     label: 'Research',
@@ -174,7 +161,6 @@ const Process = () => {
   const [isVisible, setIsVisible] = useState(false); // section reveal
   const [parallax, setParallax] = useState({
     header: 0,
-    marquee: 0,
     grid: 0,
     what: 0,
     footer: 0,
@@ -207,7 +193,7 @@ const Process = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Parallax + scroll-driven marquee
+  // Parallax + scroll-driven "What I Do" marquee
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -225,14 +211,12 @@ const Process = () => {
       const progress = Math.min(1.2, Math.max(0, rawProgress));
 
       const headerOffset = -28 * progress;
-      const marqueeOffset = -18 * progress;
       const gridOffset = -10 * progress;
       const whatOffset = -6 * progress;
       const footerOffset = -3 * progress;
 
       setParallax({
         header: headerOffset,
-        marquee: marqueeOffset,
         grid: gridOffset,
         what: whatOffset,
         footer: footerOffset,
@@ -294,31 +278,7 @@ const Process = () => {
           </p>
         </div>
 
-        {/* Infinite marquee with light parallax */}
-        <div
-          className="process-marquee"
-          style={{ transform: `translateY(${parallax.marquee}px)` }}
-        >
-          <div className="process-marquee__fade process-marquee__fade--left" />
-          <div className="process-marquee__track">
-            <div className="process-marquee__inner">
-              {marqueeItems.map((item) => (
-                <span key={item} className="process-pill">
-                  {item}
-                </span>
-              ))}
-            </div>
-            <div className="process-marquee__inner process-marquee__inner--clone">
-              {marqueeItems.map((item) => (
-                <span key={`${item}-clone`} className="process-pill">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-          <div className="process-marquee__fade process-marquee__fade--right" />
-        </div>
-{/* What I Do (and Do Well) – scroll-driven marquee */}
+        {/* What I Do (and Do Well) – scroll-driven marquee */}
         <div
           className="what-i-do"
           style={{ transform: `translateY(${parallax.what}px)` }}
@@ -354,15 +314,14 @@ const Process = () => {
 
             {/* Step indicator like — 1 — RESEARCH */}
             <div className="what-carousel-indicator">
-              <span className="what-step-number">
-                — {activeIndex + 1} —
-              </span>
+              <span className="what-step-number">— {activeIndex + 1} —</span>
               <span className="what-step-label">
                 {activeItem.label.toUpperCase()}
               </span>
             </div>
           </div>
         </div>
+
         {/* Process Grid – bento layout + per-card scroll animation */}
         <div
           className="process-grid"
@@ -372,8 +331,6 @@ const Process = () => {
             <ProcessCard key={step.id} step={step} index={index} />
           ))}
         </div>
-
-        
 
         {/* Tiny footer copy */}
         <div

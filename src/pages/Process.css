@@ -7,16 +7,16 @@
   --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Section now behaves like an About section child */
+/* Section container */
 .process-section {
   margin-top: 60px;
-  padding: 0; /* About container already has horizontal padding */
+  padding: 0;
   background: transparent;
   position: relative;
   overflow: visible;
 }
 
-/* softer, lighter ambient glows so they don’t fight About UI */
+/* Ambient glows */
 .process-ambient {
   position: absolute;
   border-radius: 999px;
@@ -31,11 +31,9 @@
   height: 260px;
   top: -40px;
   left: -40px;
-  background: radial-gradient(
-    circle at 30% 30%,
-    rgba(243, 156, 18, 0.35),
-    transparent 60%
-  );
+  background: radial-gradient(circle at 30% 30%,
+      rgba(243, 156, 18, 0.35),
+      transparent 60%);
 }
 
 .process-ambient--two {
@@ -43,13 +41,12 @@
   height: 320px;
   bottom: -80px;
   right: -60px;
-  background: radial-gradient(
-    circle at 70% 70%,
-    rgba(52, 60, 110, 0.25),
-    transparent 60%
-  );
+  background: radial-gradient(circle at 70% 70%,
+      rgba(52, 60, 110, 0.25),
+      transparent 60%);
 }
 
+/* Main container */
 .process-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -68,7 +65,7 @@
   transform: translateY(0) scale(1);
 }
 
-/* Header – same kind of hierarchy as About section titles */
+/* Header */
 .process-header {
   text-align: center;
   margin-bottom: clamp(40px, 6vh, 60px);
@@ -96,7 +93,6 @@
   display: inline-block;
 }
 
-/* underline echoing .section-title from About */
 .process-title::after {
   content: '';
   position: absolute;
@@ -120,7 +116,7 @@
   line-height: 1.8;
 }
 
-/* use same highlighted-name feel as About (yellow underline) */
+/* Highlighted text */
 .highlighted-name {
   position: relative;
   display: inline-block;
@@ -145,7 +141,7 @@
   width: 105%;
 }
 
-/* Marquee */
+/* ===== Marquee (used by Home, removed from Process JSX) ===== */
 .process-marquee {
   position: relative;
   margin: clamp(30px, 5vh, 50px) auto;
@@ -154,9 +150,7 @@
   transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
   will-change: transform;
   border-radius: 999px;
-  /* border: 1px dashed rgba(29, 35, 66, 0.14); */
   padding-block: 6px;
-  /* background: rgba(255, 255, 255, 0.85); */
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
@@ -218,7 +212,7 @@
   background: linear-gradient(270deg, rgba(244, 239, 227, 0.9) 15%, transparent 100%);
 }
 
-/* Process Grid */
+/* ===== Process grid ===== */
 .process-grid {
   display: grid;
   gap: 32px;
@@ -256,7 +250,7 @@
   }
 }
 
-/* Cards – now styled like About cards (border + offset shadow) */
+/* Process cards */
 .process-card {
   background: transparent;
   border-radius: 12px;
@@ -359,7 +353,7 @@
   margin-bottom: 1.6rem;
 }
 
-/* Progress line
+/* Progress bar wrapper (visuals mostly controlled via .card-progress-bar) */
 .card-progress {
   width: 100%;
   height: 3px;
@@ -367,21 +361,19 @@
   border-radius: 999px;
   overflow: hidden;
   position: relative;
-} */
+}
 
-/* .card-progress-bar {
+.card-progress-bar {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    var(--process-highlight),
-    #ffcc6a,
-    var(--process-soft-blue)
-  );
+  background: linear-gradient(90deg,
+      var(--process-highlight),
+      #ffcc6a,
+      var(--process-soft-blue));
   transform-origin: left center;
   transform: scaleX(0);
   transition: transform 0.6s ease-out;
-} */
+}
 
 .process-card.is-in-view .card-progress-bar {
   transform: scaleX(1);
@@ -391,65 +383,7 @@
   animation: process-progress-pulse 1.6s ease-in-out infinite;
 }
 
-/* WHAT I DO SECTION */
-.what-i-do {
-  margin-top: clamp(56px, 8vh, 72px);
-  padding-top: clamp(36px, 6vh, 48px);
-  border-top: 1px dashed rgba(29, 35, 66, 0.12);
-  transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-  will-change: transform;
-}
-
-.what-i-do-header {
-  text-align: left;
-  margin-bottom: 24px;
-}
-
-.what-i-do-eyebrow {
-  font-family: var(--font-body);
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 0.75rem;
-  color: rgba(29, 35, 66, 0.6);
-  margin-bottom: 0.4rem;
-}
-
-.what-i-do-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.1rem, 4vw, 2.6rem);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--process-accent);
-  margin-bottom: 0.75rem;
-}
-
-.what-i-do-intro {
-  max-width: 620px;
-  font-family: var(--font-body);
-  font-size: 0.98rem;
-  color: rgba(29, 35, 66, 0.9);
-  line-height: 1.7;
-}
-
-.what-i-do-intro span {
-  font-weight: 600;
-  position: relative;
-}
-
-.what-i-do-intro span::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0.1em;
-  height: 0.5em;
-  border-radius: 999px;
-  background: rgba(243, 156, 18, 0.22);
-  z-index: -1;
-}
-
-/* === WHAT I DO – SCROLL-DRIVEN MARQUEE === */
-
+/* ===== WHAT I DO SECTION ===== */
 .what-i-do {
   margin-top: clamp(56px, 8vh, 72px);
   padding-top: clamp(36px, 6vh, 48px);
@@ -502,12 +436,11 @@
   bottom: 0.1em;
   height: 0.5em;
   border-radius: 999px;
-  background: rgba(243, 156, 18, 0.18);
+  background: rgba(243, 156, 18, 0.22);
   z-index: -1;
 }
 
-/* ==== MARQUEE LAYOUT ==== */
-
+/* Scroll-driven "marquee" layout */
 .what-carousel {
   margin-top: 28px;
   position: relative;
@@ -540,8 +473,7 @@
   box-sizing: border-box;
 }
 
-/* === WHAT CARD (matches About card style) === */
-
+/* WHAT card */
 .what-card {
   position: relative;
   background: transparent;
@@ -622,8 +554,7 @@
   opacity: 1;
 }
 
-/* ==== STEP INDICATOR (— 1 — RESEARCH) ==== */
-
+/* Step indicator — 1 — RESEARCH */
 .what-carousel-indicator {
   margin-top: 18px;
   display: flex;
@@ -647,7 +578,7 @@
   opacity: 0.9;
 }
 
-/* Mobile tweaks */
+/* Mobile tweaks for WHAT section */
 @media (max-width: 640px) {
   .what-carousel-viewport {
     max-width: 100%;
@@ -658,17 +589,6 @@
     gap: 8px;
   }
 }
-
-/* .what-card:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 8px 8px 0 var(--process-accent);
-  border-width: 3px;
-  padding: 23px 21px 25px;
-}
-
-.what-card:hover .what-card-glow {
-  opacity: 1;
-} */
 
 /* Footer */
 .process-footer {
@@ -695,16 +615,19 @@
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }
 }
 
 @keyframes process-progress-pulse {
+
   0%,
   100% {
     transform: scaleX(1);
   }
+
   50% {
     transform: scaleX(1.06);
   }
@@ -714,25 +637,21 @@
 @keyframes card-wiggle {
   0% {
     transform:
-      translate3d(0, 26px, 0)
-      rotate3d(1, 0, 0, 8deg)
-      scale(0.96);
+      translate3d(0, 26px, 0) rotate3d(1, 0, 0, 8deg) scale(0.96);
   }
+
   60% {
     transform:
-      translate3d(0, -6px, 0)
-      rotate3d(0.3, 0, 0, -2deg)
-      scale(1.02);
+      translate3d(0, -6px, 0) rotate3d(0.3, 0, 0, -2deg) scale(1.02);
   }
+
   100% {
     transform:
-      translate3d(0, 0, 0)
-      rotate3d(0, 0, 0, 0deg)
-      scale(1);
+      translate3d(0, 0, 0) rotate3d(0, 0, 0, 0deg) scale(1);
   }
 }
 
-/* Responsive */
+/* Responsive tweaks */
 @media (max-width: 900px) {
   .process-title {
     font-size: clamp(2.1rem, 7vw, 2.8rem);
@@ -788,12 +707,4 @@
   .process-title {
     font-size: clamp(1.9rem, 8vw, 2.3rem);
   }
-}
-.what-card-glow {
-  position: absolute;
-  inset: -30%;
-  background: radial-gradient(circle at 10% -10%, transparent 55%);
-  opacity: 0;
-  transition: opacity 0.4s ease-out;
-  pointer-events: none;
 }
