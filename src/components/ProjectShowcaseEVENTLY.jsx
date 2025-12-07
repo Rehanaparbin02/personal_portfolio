@@ -1,29 +1,14 @@
-import React, { useEffect, useRef, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import "./ProjectShowcaseEVENTLY.css";
-
-// ============================================================================
-// ASSETS - PLACEHOLDERS
-// NOTE: I am using placeholders since I cannot access your local assets.
-// You should ensure these paths are correct in your final code.
-// ============================================================================
-// import heroBg from "../assets/showcase-hero.png";
-// import codeImage from "../assets/image.png";
-// import homeScreen1 from "../assets/home/home-1.png";
-// ... (rest of image imports)
 
 // ============================================================================
 // CONSTANTS
 // ============================================================================
-const HERO_BG_GRADIENT =
-  "linear-gradient(135deg, rgba(44,62,92,0.75) 0%, rgba(26,37,56,0.75) 100%)";
-
 const OBSERVER_CONFIG = {
   root: null,
   rootMargin: "0px 0px -10% 0px",
   threshold: 0.12,
 };
-const REVEAL_DELAY_MULTIPLIER = 80;
 
 const TAGS = ["REACT NATIVE", "SOCKET.IO", "TEAM MANAGEMENT", "REAL-TIME"];
 
@@ -99,15 +84,50 @@ const RESULTS = [
 ];
 
 // ============================================================================
+// CUSTOM HOOKS
+// ============================================================================
+
+// Custom Hook for Scroll Animations
+const useScrollAnimation = () => {
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -100px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, observerOptions);
+
+    const elements = document.querySelectorAll('.reveal');
+    elements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+};
+
+// ============================================================================
 // REUSABLE COMPONENTS
 // ============================================================================
 
 const Hero = () => (
-  // *** THE FIX: Using 'koa-hero' class to apply the correct styling ***
-  <div className={`showcase-hero koa-hero`}>
-    <div className="showcase-hero-image">{/* Optional: Image asset here */}</div>
-    <div className="hero-gradient-overlay"></div>
-    <div className="showcase-hero-content glass-effect reveal">
+  <div className={`showcase-hero koa-hero animate-hero`}>
+    <div className="hero-particles">
+      {[...Array(20)].map((_, i) => (
+        <div key={i} className="particle" style={{
+          left: `${Math.random() * 100}%`,
+          animationDelay: `${Math.random() * 3}s`,
+          animationDuration: `${3 + Math.random() * 4}s`
+        }}></div>
+      ))}
+    </div>
+
+    <div className="showcase-hero-content glass-effect">
+      <div className="hero-badge">Real-Time Collaboration</div>
       <h1 className="showcase-title">Evently</h1>
       <div className="showcase-tags">
         {TAGS.map((tag) => (
@@ -125,12 +145,12 @@ const Hero = () => (
 );
 
 const ProjectOverview = () => (
-  <div className="showcase-section reveal">
-    <h2 className="showcase-section-title">Project Overview</h2>
+  <section className="showcase-section reveal">
+    <h2 className="showcase-section-title highlight-title">Project Overview</h2>
     <div className="showcase-grid">
       <div className="showcase-inner-grid">
-        {PROJECT_INFO.map((item) => (
-          <div key={item.title} className="showcase-info-card">
+        {PROJECT_INFO.map((item, idx) => (
+          <div key={item.title} className="showcase-info-card reveal" style={{ animationDelay: `${idx * 0.1}s` }}>
             <div className="showcase-icon-h3-wrap">
               <span className="info-card-icon" role="img" aria-label={item.title}>
                 {item.icon}
@@ -141,18 +161,18 @@ const ProjectOverview = () => (
           </div>
         ))}
       </div>
-      <p className="showcase-info-card-para">
+      <div className="showcase-info-card-para reveal">
         EVENTLY was a passion project aimed at solving common organizational
         challenges in high-volume event planning. It evolved into a robust
         fullstack application demonstrating expertise in real-time data
         synchronization and mobile-first UX design.
-      </p>
+      </div>
     </div>
-  </div>
+  </section>
 );
 
 const Challenge = () => (
-  <div className="showcase-section reveal">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">The Challenge</h2>
     <div className="showcase-text">
       <p>
@@ -164,11 +184,11 @@ const Challenge = () => (
         exact same, up-to-the-second status.
       </p>
     </div>
-  </div>
+  </section>
 );
 
 const Solution = () => (
-  <div className="showcase-section reveal">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">The Solution</h2>
     <div className="showcase-text">
       <p>
@@ -193,15 +213,15 @@ const Solution = () => (
         </li>
       </ul>
     </div>
-  </div>
+  </section>
 );
 
 const DesignProcess = () => (
-  <div className="showcase-section reveal">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Design Process</h2>
     <div className="flowchart-body">
       {DESIGN_PROCESS_STEPS.map((step, index) => (
-        <div key={step.number} className="flowchart-step reveal">
+        <div key={step.number} className="flowchart-step reveal" style={{ animationDelay: `${index * 0.15}s` }}>
           <div className="flowchart-node">{step.number}</div>
           {index < DESIGN_PROCESS_STEPS.length - 1 && (
             <div className="flowchart-connector"></div>
@@ -216,15 +236,15 @@ const DesignProcess = () => (
         </div>
       ))}
     </div>
-  </div>
+  </section>
 );
 
 const KeyFeatures = () => (
-  <div className="showcase-section reveal">
-    <h2 className="showcase-section-title">Key Features</h2>
+  <section className="showcase-section reveal">
+    <h2 className="showcase-section-title highlight-title">Key Features</h2>
     <div className="bento-grid">
-      {KEY_FEATURES.map((feature) => (
-        <div key={feature.title} className={`bento-item reveal ${feature.size}`}>
+      {KEY_FEATURES.map((feature, idx) => (
+        <div key={feature.title} className={`bento-item reveal ${feature.size}`} style={{ animationDelay: `${idx * 0.1}s` }}>
           <span className="bento-icon" role="img" aria-label={feature.title}>
             {feature.icon}
           </span>
@@ -233,12 +253,12 @@ const KeyFeatures = () => (
         </div>
       ))}
     </div>
-  </div>
+  </section>
 );
 
 const VisualDesign = () => (
-  <div className="showcase-section reveal">
-    <h2 className="showcase-section-title">Visual Design</h2>
+  <section className="showcase-section reveal">
+    <h2 className="showcase-section-title highlight-title">Visual Design</h2>
     <div className="visual-subsection reveal">
       <h3 className="visual-subtitle">Typography</h3>
       <div className="showcase-text">
@@ -249,8 +269,8 @@ const VisualDesign = () => (
         </p>
       </div>
       <div className="typography-preview">
-        <div className="font-sample bebas">Evently</div>
-        <div className="font-sample inter">Seamless Experience</div>
+        <div className="font-sample bebas reveal">Evently</div>
+        <div className="font-sample inter reveal">Seamless Experience</div>
       </div>
     </div>
 
@@ -265,37 +285,37 @@ const VisualDesign = () => (
       </div>
       <div className="color-palette">
         <div
-          className="color-swatch"
+          className="color-swatch reveal"
           style={{ background: "#2c3e5c", color: "#ffe395" }}
         >
           Accent Dark #2c3e5c
         </div>
         <div
-          className="color-swatch"
+          className="color-swatch reveal"
           style={{ background: "#1a2538", color: "#ffe395" }}
         >
           Accent Deep #1a2538
         </div>
         <div
-          className="color-swatch"
+          className="color-swatch reveal"
           style={{ background: "#ffe395", color: "#2c3e5c" }}
         >
           Accent Cream #ffe395
         </div>
         <div
-          className="color-swatch"
+          className="color-swatch reveal"
           style={{ background: "#f9f9f9", color: "#3b3b3b" }}
         >
           Card BG #f9f9f9
         </div>
       </div>
     </div>
-  </div>
+  </section>
 );
 
 const FinalDesigns = () => (
-  <div className="showcase-section reveal showcase-section-last">
-    <h2 className="showcase-section-title">Final Designs</h2>
+  <section className="showcase-section reveal">
+    <h2 className="showcase-section-title highlight-title">Final Designs</h2>
 
     <div className="final-design-subsection reveal">
       <h3 className="final-subtitle">Core Mobile Screens</h3>
@@ -306,23 +326,23 @@ const FinalDesigns = () => (
         </p>
       </div>
       <div className="mockup-row">
-        <div className="mockup-placeholder">
+        <div className="mockup-placeholder reveal">
           <div className="mockup-device">Home Dashboard</div>
         </div>
-        <div className="mockup-placeholder">
+        <div className="mockup-placeholder reveal">
           <div className="mockup-device">Task List</div>
         </div>
-        <div className="mockup-placeholder">
+        <div className="mockup-placeholder reveal">
           <div className="mockup-device">Real-Time Chat</div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 );
 
 const Development = () => (
-  <div className="showcase-section reveal">
-    <h2 className="showcase-section-title">Development & Code</h2>
+  <section className="showcase-section reveal">
+    <h2 className="showcase-section-title highlight-title">Development & Code</h2>
     <div className="showcase-text">
       <p>
         As a fullstack developer, the challenge was in architecting the{" "}
@@ -331,9 +351,8 @@ const Development = () => (
         connections without performance degradation.
       </p>
     </div>
-    <div className="code-collage-grid">
+    <div className="code-collage">
       <div className="code-card large reveal">
-        {/* Placeholder for a code snippet image/component */}
         Node.js Socket Handler Snippet
       </div>
       <div className="code-card medium reveal">
@@ -346,15 +365,14 @@ const Development = () => (
 
     <div className="github-link-wrap reveal">
       <a href="#" className="github-button" target="_blank" rel="noopener noreferrer">
-        {/* Placeholder for GitHub Icon */}
         View Project on GitHub
       </a>
     </div>
-  </div>
+  </section>
 );
 
 const KeyLearnings = () => (
-  <div className="showcase-section reveal showcase-section-last">
+  <section className="showcase-section showcase-section-last reveal">
     <h2 className="showcase-section-title highlight-title">Key Learnings</h2>
     <div className="showcase-text">
       <p>
@@ -367,108 +385,43 @@ const KeyLearnings = () => (
         design.
       </p>
       <div className="showcase-results">
-        {RESULTS.map((item) => (
-          <div key={item.stat} className="result-stat reveal">
+        {RESULTS.map((item, idx) => (
+          <div key={item.stat} className="result-stat reveal" style={{ animationDelay: `${idx * 0.1}s` }}>
             <h3>{item.stat}</h3>
             <p>{item.label}</p>
           </div>
         ))}
       </div>
     </div>
-  </div>
+  </section>
 );
 
 // ============================================================================
 // MAIN COMPONENT
 // ============================================================================
 export default function ProjectShowcaseEVENTLY() {
-  const navigate = useNavigate();
-  const containerRef = useRef(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Hook for closing modal
-  const handleClose = useCallback(
-    (e) => {
-      e?.stopPropagation();
-      navigate(-1);
-    },
-    [navigate]
-  );
+  useScrollAnimation();
 
-  // Hook for keyboard close (Escape key)
-  const handleKeyDown = useCallback(
-    (e) => {
-      if (e.key === "Escape") handleClose();
-    },
-    [handleClose]
-  );
-
-  // Hook for side-effect setup
   useEffect(() => {
-    // 1. Manage body overflow for modal effect
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden auto";
-    
-    // 2. Add keyboard listener
-    window.addEventListener("keydown", handleKeyDown);
-    
-    // 3. Setup Intersection Observer for reveal animations
-    const observer = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      OBSERVER_CONFIG
-    );
-
-    const targets = containerRef.current?.querySelectorAll(".reveal");
-    targets?.forEach((t, i) => {
-      t.style.setProperty("--reveal-delay", `${i * REVEAL_DELAY_MULTIPLIER}ms`);
-      observer.observe(t);
-    });
-
-    // Cleanup function
-    return () => {
-      document.body.style.overflow = prevOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
-      observer.disconnect();
-    };
-  }, [handleKeyDown]);
+    setIsLoaded(true);
+    window.scrollTo(0, 0); // Scroll to top on mount
+  }, []);
 
   return (
-    <div className="showcase-overlay" onClick={handleClose} aria-modal="true" role="dialog">
-      <div
-        className="showcase-container"
-        onClick={(e) => e.stopPropagation()}
-        ref={containerRef}
-        aria-label="EVENTLY showcase"
-      >
-        <button
-          className="showcase-close"
-          onClick={handleClose}
-          aria-label="Close showcase"
-        >
-          <span>&times;</span>
-        </button>
-
-        {/* HERO SECTION */}
-        <Hero />
-
-        {/* MAIN CONTENT */}
-        <div className="showcase-body">
-          <ProjectOverview />
-          <Challenge />
-          <Solution />
-          <DesignProcess />
-          <KeyFeatures />
-          <VisualDesign />
-          <FinalDesigns />
-          <Development />
-          <KeyLearnings />
-        </div>
+    <div className={`showcase-full-page ${isLoaded ? 'loaded' : ''}`}>
+      <Hero />
+      <div className="showcase-body">
+        <ProjectOverview />
+        <Challenge />
+        <Solution />
+        <DesignProcess />
+        <KeyFeatures />
+        <VisualDesign />
+        <FinalDesigns />
+        <Development />
+        <KeyLearnings />
       </div>
     </div>
   );

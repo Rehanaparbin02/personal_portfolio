@@ -1,350 +1,279 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Process.css';
 
-const processSteps = [
-  {
-    id: '01',
-    title: 'Discover',
-    subtitle: 'Research, context & constraints',
-    description:
-      'I start by understanding users, business goals, and technical constraints — aligning design ambitions with what’s realistic to build.',
-  },
-  {
-    id: '02',
-    title: 'Define',
-    subtitle: 'Flows, architecture & systems',
-    description:
-      'I map user journeys, information architecture, and system behavior — including API needs, component structure, and edge cases.',
-  },
-  {
-    id: '03',
-    title: 'Design',
-    subtitle: 'Interfaces, interactions & systems',
-    description:
-      'I design UI and interactions that are component-based, dev-friendly, and ready to plug into design systems or frontend frameworks.',
-  },
-  {
-    id: '04',
-    title: 'Build',
-    subtitle: 'Code, prototypes & performance',
-    description:
-      'I turn designs into responsive, accessible experiences using modern stacks — from web apps to mobile, with clean, scalable code.',
-  },
-  {
-    id: '05',
-    title: 'Refine',
-    subtitle: 'Test, iterate & ship',
-    description:
-      'I test, debug, and refine — improving UX, fixing edge cases, and polishing motion and microinteractions before and after launch.',
-  },
-];
-
-const whatIDoItems = [
-  {
-    label: 'Research',
-    tag: 'Insights',
-    description:
-      'Digging into user needs, behavior, and context to uncover the story behind the solution.',
-  },
-  {
-    label: 'Strategize',
-    tag: 'Vision & Direction',
-    description:
-      'Mapping vision and product strategy so creativity, constraints, and goals stay aligned.',
-  },
-  {
-    label: 'Design',
-    tag: 'Product & Visual',
-    description:
-      'Where ideas turn into interfaces — systems, flows, and visuals that feel bold and intentional.',
-  },
-  {
-    label: 'Build',
-    tag: 'Code · Web & Mobile',
-    description:
-      'Turning designs into performant, responsive experiences that bridge form and function.',
-  },
-  {
-    label: 'Test',
-    tag: 'Quality & UX',
-    description:
-      'Fine-tuning details through testing, validation, and iteration so everything feels effortless to use.',
-  },
-  {
-    label: 'Repeat',
-    tag: 'Evolve & Grow',
-    description:
-      'Refining, evolving, and improving — because great products are never really “done”.',
-  },
-];
-
-/**
- * Hook: returns [ref, inView] for scroll-into-view animation
- */
-const useInViewOnce = (options = {}) => {
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-
-  useEffect(() => {
-    if (!ref.current || typeof IntersectionObserver === 'undefined') return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.unobserve(entry.target); // animate once
-        }
-      },
-      {
-        threshold: 0.2,
-        ...options,
-      }
-    );
-
-    observer.observe(ref.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [options]);
-
-  return [ref, inView];
-};
-
-/**
- * Process card – each one animates when scrolled into view
- */
-const ProcessCard = ({ step, index }) => {
-  const [cardRef, inView] = useInViewOnce();
-
-  return (
-    <div
-      ref={cardRef}
-      className={`process-card ${inView ? 'is-in-view' : ''}`}
-      style={{ transitionDelay: `${index * 90}ms` }}
-    >
-      <div className="process-card__glow" />
-      <div className="card-number">{step.id}</div>
-      <div className="card-content">
-        <div className="card-chip">{step.subtitle}</div>
-        <h3 className="card-title">{step.title}</h3>
-        <p className="card-description">{step.description}</p>
-        <div className="card-progress">
-          <div className="card-progress-bar" />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-/**
- * What I Do card – used inside scroll-driven marquee
- */
-const WhatCard = ({ item, index }) => {
-  const [cardRef, inView] = useInViewOnce();
-
-  return (
-    <div
-      ref={cardRef}
-      className={`what-card ${inView ? 'is-in-view' : ''}`}
-      style={{ transitionDelay: `${220 + index * 80}ms` }}
-    >
-      <div className="what-card-glow" />
-      <div className="what-card-tag">{item.tag}</div>
-      <h4 className="what-card-title">{item.label}</h4>
-      <p className="what-card-description">{item.description}</p>
-    </div>
-  );
-};
-
 const Process = () => {
-  const [isVisible, setIsVisible] = useState(false); // section reveal
-  const [parallax, setParallax] = useState({
-    header: 0,
-    grid: 0,
-    what: 0,
-    footer: 0,
-  });
+  const [isVisible, setIsVisible] = useState({});
+  const observerRef = useRef(null);
 
-  const [whatScrollProgress, setWhatScrollProgress] = useState(0); // 0 → 1
-
-  const sectionRef = useRef(null);
-  const whatRef = useRef(null);
-
-  // Section-level reveal
   useEffect(() => {
-    if (!sectionRef.current || typeof IntersectionObserver === 'undefined') {
-      setIsVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible((prev) => ({
+              ...prev,
+              [entry.target.dataset.section]: true,
+            }));
+            observerRef.current.unobserve(entry.target);
+          }
+        });
       },
       { threshold: 0.15 }
     );
 
-    observer.observe(sectionRef.current);
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Parallax + scroll-driven "What I Do" marquee
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-
-      const viewportHeight =
-        window.innerHeight || document.documentElement.clientHeight || 1;
-
-      const sectionRect = sectionRef.current.getBoundingClientRect();
-
-      const rawProgress =
-        (viewportHeight - sectionRect.top) /
-        (viewportHeight + sectionRect.height);
-      const progress = Math.min(1.2, Math.max(0, rawProgress));
-
-      const headerOffset = -28 * progress;
-      const gridOffset = -10 * progress;
-      const whatOffset = -6 * progress;
-      const footerOffset = -3 * progress;
-
-      setParallax({
-        header: headerOffset,
-        grid: gridOffset,
-        what: whatOffset,
-        footer: footerOffset,
-      });
-
-      // === Scroll progress specifically for the WHAT section ===
-      if (whatRef.current) {
-        const whatRect = whatRef.current.getBoundingClientRect();
-        const total = whatRect.height + viewportHeight;
-
-        // 0 when section just enters, 1 when fully passed
-        const rawWhat = (viewportHeight - whatRect.top) / total;
-        const clampedWhat = Math.min(1, Math.max(0, rawWhat));
-
-        setWhatScrollProgress(clampedWhat);
-      }
-    };
-
-    handleScroll();
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
+    const sections = document.querySelectorAll('[data-section]');
+    sections.forEach((section) => observerRef.current.observe(section));
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+      if (observerRef.current) observerRef.current.disconnect();
     };
   }, []);
 
-  const slideCount = whatIDoItems.length;
-  const maxOffset = (slideCount - 1) * 100;
-  const trackTranslateX = whatScrollProgress * maxOffset;
+  const processSteps = [
+    {
+      number: '01',
+      title: 'Understand',
+      subtitle: 'Research & Discovery',
+      description:
+        'I start by deeply understanding the problem space, user needs, and business constraints. This involves user research, competitive analysis, and stakeholder interviews to establish clear goals and success metrics.',
+      highlights: ['User Research', 'Competitive Analysis', 'Goal Setting', 'Metrics Definition'],
+    },
+    {
+      number: '02',
+      title: 'Explore',
+      subtitle: 'Ideation & Prototyping',
+      description:
+        'With a solid foundation, I explore multiple solutions through sketching, wireframing, and rapid prototyping. This phase is about divergent thinking—generating ideas, testing assumptions, and iterating quickly.',
+      highlights: ['Sketching', 'Wireframing', 'User Flows', 'Low-Fi Prototypes'],
+    },
+    {
+      number: '03',
+      title: 'Refine',
+      subtitle: 'Design Systems & Polish',
+      description:
+        'I refine the chosen direction by building out design systems, crafting pixel-perfect interfaces, and adding micro-interactions. Every detail matters—from typography to motion, ensuring consistency and delight.',
+      highlights: ['Design Systems', 'UI Polish', 'Microinteractions', 'Accessibility'],
+    },
+    {
+      number: '04',
+      title: 'Ship',
+      subtitle: 'Development & Launch',
+      description:
+        'Finally, I bring designs to life with production-ready code. I work closely with developers (or code it myself) to ensure the final product matches the vision, then iterate based on real user feedback.',
+      highlights: ['React/React Native', 'Component Libraries', 'Performance', 'User Testing'],
+    },
+  ];
 
-  const activeIndex = Math.min(
-    slideCount - 1,
-    Math.max(0, Math.round(whatScrollProgress * (slideCount - 1)))
-  );
-  const activeItem = whatIDoItems[activeIndex];
+  const services = [
+    {
+      icon: '🎨',
+      title: 'UI/UX Design',
+      description:
+        'Crafting intuitive, beautiful interfaces that users love. From wireframes to high-fidelity mockups, I design with both aesthetics and usability in mind.',
+    },
+    {
+      icon: '⚛️',
+      title: 'Frontend Development',
+      description:
+        'Building responsive, performant web applications with React, TypeScript, and modern CSS. Pixel-perfect implementation with smooth animations.',
+    },
+    {
+      icon: '📱',
+      title: 'Mobile Apps',
+      description:
+        'Creating cross-platform mobile experiences with React Native. Native feel, shared codebase, and seamless user experiences on iOS and Android.',
+    },
+    {
+      icon: '🎯',
+      title: 'Design Systems',
+      description:
+        'Establishing scalable design systems with reusable components, design tokens, and comprehensive documentation for consistent brand experiences.',
+    },
+    {
+      icon: '🔧',
+      title: 'Full-Stack Development',
+      description:
+        'End-to-end development with Node.js, Express, PostgreSQL, and Supabase. Building robust backends that power delightful frontend experiences.',
+    },
+    {
+      icon: '✨',
+      title: 'Prototyping',
+      description:
+        'Rapid prototyping in Figma and Framer to validate ideas quickly. Interactive prototypes that feel real and help stakeholders visualize the vision.',
+    },
+  ];
 
   return (
-    <section className="process-section" ref={sectionRef}>
-      {/* background ambient glow for parallax feeling */}
-      <div className="process-ambient process-ambient--one" />
-      <div className="process-ambient process-ambient--two" />
+    <div className="process-container">
+      {/* HERO SECTION */}
+      <div
+        className={`process-hero ${isVisible.hero ? 'reveal' : ''}`}
+        data-section="hero"
+      >
 
-      <div className={`process-container ${isVisible ? 'reveal' : ''}`}>
-        {/* Header */}
-        <div
-          className="process-header"
-          style={{ transform: `translateY(${parallax.header}px)` }}
-        >
-          <p className="process-eyebrow">Workflow • Craft • Clarity</p>
-          <h2 className="process-title">Process, not guesswork.</h2>
+      </div>
+
+      {/* WHAT I DO SECTION */}
+      <div
+        className={`what-i-do-section ${isVisible.whatIDo ? 'reveal' : ''}`}
+        data-section="whatIDo"
+      >
+        <h2 className="what-i-do-title">What I Do</h2>
+        <p className="what-i-do-subtitle">
+          I wear multiple hats—designer, developer, and problem solver. Here's how I can help bring
+          your ideas to life.
+        </p>
+
+        <div className="services-grid">
+          {services.map((service, index) => (
+            <div
+              key={index}
+              className={`service-card ${isVisible[`service${index}`] ? 'reveal' : ''}`}
+              data-section={`service${index}`}
+            >
+              <div className="service-icon">{service.icon}</div>
+              <h3 className="service-title">{service.title}</h3>
+              <p className="service-description">
+                {index === 0 && (
+                  <>
+                    Crafting <span className="highlighted-name">intuitive</span>, beautiful interfaces that users love. From wireframes to high-fidelity mockups, I design with both <span className="highlighted-name">aesthetics</span> and <span className="highlighted-name">usability</span> in mind.
+                  </>
+                )}
+                {index === 1 && (
+                  <>
+                    Building <span className="highlighted-name">responsive</span>, performant web applications with <span className="highlighted-name">React</span>, <span className="highlighted-name">TypeScript</span>, and modern CSS. Pixel-perfect implementation with smooth animations.
+                  </>
+                )}
+                {index === 2 && (
+                  <>
+                    Creating <span className="highlighted-name">cross-platform</span> mobile experiences with <span className="highlighted-name">React Native</span>. Native feel, shared codebase, and seamless user experiences on iOS and Android.
+                  </>
+                )}
+                {index === 3 && (
+                  <>
+                    Establishing <span className="highlighted-name">scalable design systems</span> with reusable components, design tokens, and comprehensive documentation for consistent brand experiences.
+                  </>
+                )}
+                {index === 4 && (
+                  <>
+                    End-to-end development with <span className="highlighted-name">Node.js</span>, <span className="highlighted-name">Express</span>, <span className="highlighted-name">PostgreSQL</span>, and <span className="highlighted-name">Supabase</span>. Building robust backends that power delightful frontend experiences.
+                  </>
+                )}
+                {index === 5 && (
+                  <>
+                    Rapid prototyping in <span className="highlighted-name">Figma</span> and <span className="highlighted-name">Framer</span> to validate ideas quickly. Interactive prototypes that feel real and help stakeholders visualize the vision.
+                  </>
+                )}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* PROCESS STEPS */}
+      <div className="process-steps">
+        <div className="process-hero-content">
+          <h1 className="process-title">My Process</h1>
           <p className="process-intro">
-            A systematic workflow where{' '}
-            <span className="highlighted-name">creativity</span> and{' '}
-            <span className="highlighted-name">engineering</span> move in sync — from idea
-            spark to shipped product.
+            From <span className="highlighted-name">concept to code</span>, here's how I approach
+            every project—blending design thinking with technical execution.
           </p>
         </div>
+        {processSteps.map((step, index) => (
+          <div
+            key={step.number}
+            className={`process-step ${isVisible[`step${index}`] ? 'reveal' : ''}`}
+            data-section={`step${index}`}
+          >
+            <div className="step-number-wrapper">
+              <span className="step-number">{step.number}</span>
+            </div>
 
-        {/* What I Do (and Do Well) – scroll-driven marquee */}
-        <div
-          className="what-i-do"
-          style={{ transform: `translateY(${parallax.what}px)` }}
-          ref={whatRef}
-        >
-          <div className="what-i-do-header">
-            <p className="what-i-do-eyebrow">Capabilities</p>
-            <h3 className="what-i-do-title">What I Do (and Do Well)</h3>
-            <p className="what-i-do-intro">
-              A mix of <span className="highlighted-name">product thinking</span>,{' '}
-              <span className="highlighted-name">visual craft</span>, and{' '}
-              <span className="highlighted-name">hands-on development</span> — so the work is
-              beautiful, usable, and shippable.
-            </p>
-          </div>
+            <div className="step-content">
+              <div className="step-header">
+                <h2 className="step-title">{step.title}</h2>
+                <p className="step-subtitle">{step.subtitle}</p>
+              </div>
 
-          {/* marquee driven by scroll */}
-          <div className="what-carousel">
-            <div className="what-carousel-viewport">
-              <div
-                className="what-carousel-track"
-                style={{
-                  transform: `translateX(-${trackTranslateX}%)`,
-                }}
-              >
-                {whatIDoItems.map((item, index) => (
-                  <div className="what-slide" key={item.label}>
-                    <WhatCard item={item} index={index} />
-                  </div>
+              <p className="step-description">{step.description}</p>
+
+              <div className="step-highlights">
+                {step.highlights.map((highlight, i) => (
+                  <span key={i} className="highlight-tag">
+                    {highlight}
+                  </span>
                 ))}
               </div>
             </div>
+          </div>
+        ))}
+      </div>
 
-            {/* Step indicator like — 1 — RESEARCH */}
-            <div className="what-carousel-indicator">
-              <span className="what-step-number">— {activeIndex + 1} —</span>
-              <span className="what-step-label">
-                {activeItem.label.toUpperCase()}
-              </span>
-            </div>
+      {/* PHILOSOPHY SECTION */}
+      <div
+        className={`process-philosophy ${isVisible.philosophy ? 'reveal' : ''}`}
+        data-section="philosophy"
+      >
+        <h2 className="philosophy-title">Design First, Function Always</h2>
+        <p className="philosophy-text">
+          I believe that <span className="highlighted-name">great design</span> isn't just about
+          aesthetics—it's about solving real problems with{' '}
+          <span className="highlighted-name">elegant solutions</span>. Every pixel, every
+          interaction, every line of code should serve a purpose. My process is iterative,
+          collaborative, and always focused on creating experiences that feel{' '}
+          <span className="highlighted-name">effortless</span> for the user.
+        </p>
+      </div>
+
+      {/* TOOLS & TECH */}
+      {/* <div
+        className={`process-tools ${isVisible.tools ? 'reveal' : ''}`}
+        data-section="tools"
+      >
+        <h2 className="tools-title">Tools & Technologies</h2>
+        <div className="tools-grid">
+          <div className="tool-category">
+            <h3 className="tool-category-title">Design</h3>
+            <ul className="tool-list">
+              <li>Figma</li>
+              <li>Framer</li>
+              <li>Adobe Creative Suite</li>
+              <li>Webflow</li>
+            </ul>
+          </div>
+
+          <div className="tool-category">
+            <h3 className="tool-category-title">Frontend</h3>
+            <ul className="tool-list">
+              <li>React & React Native</li>
+              <li>TypeScript</li>
+              <li>Next.js</li>
+              <li>Tailwind CSS</li>
+            </ul>
+          </div>
+
+          <div className="tool-category">
+            <h3 className="tool-category-title">Backend</h3>
+            <ul className="tool-list">
+              <li>Node.js & Express</li>
+              <li>PostgreSQL</li>
+              <li>Supabase</li>
+              <li>RESTful APIs</li>
+            </ul>
+          </div>
+
+          <div className="tool-category">
+            <h3 className="tool-category-title">Other</h3>
+            <ul className="tool-list">
+              <li>Git & GitHub</li>
+              <li>VS Code</li>
+              <li>Postman</li>
+              <li>Expo</li>
+            </ul>
           </div>
         </div>
-
-        {/* Process Grid – bento layout + per-card scroll animation */}
-        <div
-          className="process-grid"
-          style={{ transform: `translateY(${parallax.grid}px)` }}
-        >
-          {processSteps.map((step, index) => (
-            <ProcessCard key={step.id} step={step} index={index} />
-          ))}
-        </div>
-
-        {/* Tiny footer copy */}
-        <div
-          className="process-footer"
-          style={{ transform: `translateY(${parallax.footer}px)` }}
-        >
-          <span className="process-footer-dot" />
-          <p>
-            Designed to be repeatable, flexible, and tailored — whether it’s a single feature
-            or a full product build.
-          </p>
-        </div>
-      </div>
-    </section>
+      </div> */}
+    </div>
   );
 };
 

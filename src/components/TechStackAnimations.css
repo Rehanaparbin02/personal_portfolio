@@ -1,0 +1,28 @@
+/* TechStackAnimations.css
+   Lightweight scroll-in animation for the whole graph.
+   No transform overrides on individual nodes = no hover bugs.
+*/
+
+/* When the graph section scrolls into view, fade nodes in */
+.tech-graph-container .tech-node {
+    opacity: 0;
+}
+
+.tech-graph-container.in-view .tech-node {
+    opacity: 1;
+}
+
+/* Nice staggered feel is handled via inline transitionDelay from JSX */
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .tech-graph-container .tech-node {
+        transition: none !important;
+        animation: none !important;
+        opacity: 1 !important;
+    }
+
+    .tech-connection {
+        animation: none !important;
+    }
+}

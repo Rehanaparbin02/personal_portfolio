@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import "./ProjectShowcaseKOA.css";
+import React, { useEffect, useState } from "react";
+import "./ProjectShowcaseZENFLOW.css";
 // Assets
-// import heroBg from "../assets/showcase-hero.png";
 import codeImage from "../assets/image.png";
 import homeScreen1 from "../assets/home/home-1.png";
 import homeScreen2 from "../assets/home/home-2.png";
@@ -23,9 +21,6 @@ import analyticsScreen4 from "../assets/analytics/analytics04.png";
 import walletScreen from "../assets/wallet/wallet.png";
 
 // Constants
-const HERO_BG_GRADIENT = "linear-gradient(135deg, rgba(44,62,92,0.75) 0%, rgba(26,37,56,0.75) 100%)";
-
-
 const TAGS = ["UI/UX", "ANDROID", "IOS", "REACT NATIVE", "PASSION PROJECT"];
 
 const PROJECT_INFO = [
@@ -37,39 +32,39 @@ const PROJECT_INFO = [
 
 const KEY_FEATURES = [
   {
-    icon: "📊",
-    title: "Auto-Categorization",
-    description: "AI-powered expense sorting that learns your spending behavior and auto-classifies transactions intelligently.",
+    icon: "🧘",
+    title: "Guided Meditation",
+    description: "AI-powered meditation sessions that adapt to your mood and stress levels, providing personalized mindfulness experiences.",
     size: "large"
   },
   {
-    icon: "💰",
-    title: "Smart Savings Goals",
-    description: "Set personalized goals like Vacation or Emergency Fund with progress visualization and milestone reminders.",
+    icon: "😴",
+    title: "Sleep Tracking",
+    description: "Monitor your sleep patterns and receive insights to improve sleep quality with personalized recommendations.",
     size: "medium"
   },
   {
-    icon: "📈",
-    title: "Visual Analytics",
-    description: "Deep insights with clean, interactive charts that make budgeting data-driven yet simple to digest.",
+    icon: "📊",
+    title: "Mood Analytics",
+    description: "Track your emotional well-being over time with beautiful visualizations and actionable insights.",
     size: "wide"
   },
   {
-    icon: "🔔",
-    title: "Budget Alerts",
-    description: "Get proactive alerts before overspending — empowering decisions without restriction.",
+    icon: "🎯",
+    title: "Wellness Goals",
+    description: "Set and achieve personal wellness milestones with progress tracking and motivational reminders.",
     size: "tall"
   },
   {
-    icon: "🤝",
-    title: "Group Expense Splitting",
-    description: "Manage shared bills transparently — track, split, and settle effortlessly within friend or team groups.",
+    icon: "🎵",
+    title: "Ambient Soundscapes",
+    description: "Curated collection of calming sounds and music to enhance your meditation and relaxation sessions.",
     size: "medium"
   },
   {
     icon: "⚡",
     title: "Real-Time Sync",
-    description: "All updates reflect instantly across devices using Supabase and live queries for blazing-fast performance.",
+    description: "All your wellness data syncs instantly across devices using Supabase for seamless tracking.",
     size: "wide"
   }
 ];
@@ -78,22 +73,22 @@ const DESIGN_PROCESS_STEPS = [
   {
     number: "01",
     title: "Research & Discovery",
-    description: "Let's face it — <span class='highlight-text'>managing money across personal and group expenses is a nightmare.</span> Most users juggle multiple apps: one for budgeting, one for splitting bills, and another for tracking goals. The result? <span class='highlight-text'>Scattered data, unclear spending patterns, and zero financial direction.</span><br /><br />The challenge was to design a <span class='highlight-text'>unified experience</span> that's <span class='highlight-text'>intuitive, collaborative, and visually engaging</span>."
+    description: "Mental wellness apps often feel <span class='highlight-text'>clinical and overwhelming</span>. Users struggle with complex interfaces that add stress instead of reducing it. The challenge was to design a <span class='highlight-text'>calming, intuitive experience</span> that feels like a peaceful sanctuary."
   },
   {
     number: "02",
     title: "Information Architecture",
-    description: "KOA bridges that gap — a <span class='highlight-text'>one-stop financial companion</span> that simplifies money management for individuals and groups alike.<br /><br />Built with <span class='highlight-text'>React Native</span> and a <span class='highlight-text'>Node.js + Supabase</span> backend, KOA combines <span class='highlight-text'>budgeting, goal-based savings, and Splitwise-style expense sharing</span> in one cohesive platform.<br /><br />The design emphasizes <span class='highlight-text'>clarity, collaboration, and control</span> through minimalist visuals and real-time data sync."
+    description: "ZENFLOW bridges that gap — a <span class='highlight-text'>holistic wellness companion</span> that simplifies mindfulness and mental health tracking.<br /><br />Built with <span class='highlight-text'>React Native</span> and a <span class='highlight-text'>Node.js + Supabase</span> backend, ZENFLOW combines <span class='highlight-text'>meditation, sleep tracking, and mood analytics</span> in one cohesive platform."
   },
   {
     number: "03",
     title: "Visual Design",
-    description: "The design process followed a clear, iterative flow:<br /><br />• <span class='highlight-text'>Research & Discovery:</span> Studied apps like Mint, Walnut, and Splitwise to identify pain points and user needs.<br />• <span class='highlight-text'>Wireframing:</span> Focused on two-tap user flows for budgeting, expense splitting, and analytics.<br />• <span class='highlight-text'>Visual Design:</span> Built a calming pastel palette for financial trust and simplicity.<br />• <span class='highlight-text'>Prototyping:</span> Tested interactive Figma prototypes to refine flow clarity and input ergonomics.<br />• <span class='highlight-text'>Development:</span> Implemented modular UI components and smooth animations using React Native."
+    description: "The design process followed a calming, iterative flow:<br /><br />• <span class='highlight-text'>Research & Discovery:</span> Studied apps like Calm, Headspace, and Insight Timer to identify pain points.<br />• <span class='highlight-text'>Wireframing:</span> Focused on minimal-tap flows for meditation sessions and mood tracking.<br />• <span class='highlight-text'>Visual Design:</span> Built a soothing pastel palette for mental peace and clarity.<br />• <span class='highlight-text'>Prototyping:</span> Tested interactive Figma prototypes to refine the meditation experience."
   },
   {
     number: "04",
     title: "Development & Testing",
-    description: "KOA successfully turned financial management into an experience that feels <span class='highlight-text'>natural and engaging</span>.<br /><br />Every screen encourages clarity and confidence — transforming money management from chaos into <span class='highlight-text'>a story of progress, transparency, and collaboration.</span>"
+    description: "ZENFLOW successfully turned wellness tracking into an experience that feels <span class='highlight-text'>natural and peaceful</span>.<br /><br />Every screen encourages calm and mindfulness — transforming mental health management into <span class='highlight-text'>a journey of self-discovery and growth.</span>"
   }
 ];
 
@@ -102,42 +97,42 @@ const SCREEN_SECTIONS = [
   {
     title: "Home Screens",
     screens: [
-      { src: homeScreen1, alt: "KOA Home Screen - Dashboard" },
-      { src: homeScreen2, alt: "KOA Home Screen - Wallets & Savings" },
-      { src: homeScreen3, alt: "KOA Home Screen - Wallets & Savings" }
+      { src: homeScreen1, alt: "ZENFLOW Home Screen - Dashboard" },
+      { src: homeScreen2, alt: "ZENFLOW Home Screen - Meditation" },
+      { src: homeScreen3, alt: "ZENFLOW Home Screen - Sleep" }
     ]
   },
   {
-    title: "Transaction Screens",
+    title: "Meditation Screens",
     screens: [
-      { src: transactionScreen1, alt: "KOA Transactions - Incomes View" },
-      { src: transactionScreen2, alt: "KOA Transactions - Expenses View" },
-      { src: transactionScreen3, alt: "KOA Transactions - Savings View" },
-      { src: transactionScreen4, alt: "KOA Transactions - Add Transaction" },
-      { src: transactionScreen5, alt: "KOA Transactions - Budget Overview" }
+      { src: transactionScreen1, alt: "ZENFLOW Meditation - Sessions" },
+      { src: transactionScreen2, alt: "ZENFLOW Meditation - Active Session" },
+      { src: transactionScreen3, alt: "ZENFLOW Meditation - Completed" },
+      { src: transactionScreen4, alt: "ZENFLOW Meditation - Library" },
+      { src: transactionScreen5, alt: "ZENFLOW Meditation - Favorites" }
     ]
   },
   {
-    title: "Savings",
+    title: "Mood Tracking",
     screens: [
-      { src: savingsScreen1, alt: "KOA Savings - Dashboard View" },
-      { src: savingsScreen2, alt: "KOA Savings - Goals View" },
-      { src: savingsScreen3, alt: "KOA Savings - Goals View" },
-      { src: savingsScreen4, alt: "KOA Savings - Goals View" }
+      { src: savingsScreen1, alt: "ZENFLOW Mood - Dashboard" },
+      { src: savingsScreen2, alt: "ZENFLOW Mood - Log Entry" },
+      { src: savingsScreen3, alt: "ZENFLOW Mood - History" },
+      { src: savingsScreen4, alt: "ZENFLOW Mood - Insights" }
     ]
   },
   {
     title: "Analytics",
     screens: [
-      { src: analyticsScreen1, alt: "KOA Analytics - Overview Dashboard" },
-      { src: analyticsScreen2, alt: "KOA Analytics - Expense Trends" },
-      { src: analyticsScreen3, alt: "KOA Analytics - Budget Analysis" },
-      { src: analyticsScreen4, alt: "KOA Analytics - Savings Progress" }
+      { src: analyticsScreen1, alt: "ZENFLOW Analytics - Overview" },
+      { src: analyticsScreen2, alt: "ZENFLOW Analytics - Sleep Trends" },
+      { src: analyticsScreen3, alt: "ZENFLOW Analytics - Mood Patterns" },
+      { src: analyticsScreen4, alt: "ZENFLOW Analytics - Progress" }
     ]
   },
   {
-    title: "Wallets",
-    screens: [{ src: walletScreen, alt: "KOA Wallet - Overview" }]
+    title: "Sleep Tracking",
+    screens: [{ src: walletScreen, alt: "ZENFLOW Sleep - Overview" }]
   },
   { title: "Settings & Profile", screens: [], placeholder: true, count: 2 }
 ];
@@ -151,40 +146,71 @@ const COLOR_SWATCHES = [
 ];
 
 const CODE_IMAGES = [
-  { src: codeImage, alt: "KOA API Integration", size: "large" },
+  { src: codeImage, alt: "ZENFLOW API Integration", size: "large" },
   { src: codeImage, alt: "Authentication Logic", size: "small" },
-  { src: codeImage, alt: "Expense Service Function", size: "medium" },
+  { src: codeImage, alt: "Meditation Service Function", size: "medium" },
 ];
 
+// Custom Hook for Scroll Animations
+const useScrollAnimation = () => {
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -100px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, observerOptions);
+
+    const elements = document.querySelectorAll('.reveal');
+    elements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+};
+
+// Hero Component
 const Hero = () => (
-  <div className="showcase-hero koa-hero">
-    <div className="showcase-hero-image">
-      <div className="hero-gradient-overlay"></div>
+  <div className="showcase-hero koa-hero animate-hero">
+    <div className="hero-particles">
+      {[...Array(20)].map((_, i) => (
+        <div key={i} className="particle" style={{
+          left: `${Math.random() * 100}%`,
+          animationDelay: `${Math.random() * 3}s`,
+          animationDuration: `${3 + Math.random() * 4}s`
+        }}></div>
+      ))}
     </div>
 
     <div className="showcase-hero-content glass-effect">
-      <h1 className="showcase-title">KOA</h1>
+      <div className="hero-badge">Wellness Reimagined</div>
+      <h1 className="showcase-title">ZENFLOW</h1>
       <div className="showcase-tags">
         <span className="showcase-tag">React Native</span>
         <span className="showcase-tag">AI UX</span>
-        <span className="showcase-tag">Finance App</span>
-        <span className="showcase-tag">IOS</span>
-        <span className="showcase-tag">REACT NATIVE</span>
-        <span className="showcase-tag">PASSION PROJECT</span>
+        <span className="showcase-tag">Wellness App</span>
+        <span className="showcase-tag">iOS</span>
+        <span className="showcase-tag">Android</span>
+        <span className="showcase-tag">Passion Project</span>
       </div>
       <p className="showcase-subtitle">
-        KOA transforms how you handle money — blending automation,
-        analytics, and collaboration into one calm, intelligent finance
+        ZENFLOW transforms how you approach mental wellness — blending meditation,
+        sleep tracking, and mood analytics into one calm, intelligent mindfulness
         experience. Built with React Native, Node.js, and Supabase for
-        real-time clarity across all your devices.
+        real-time peace across all your devices.
       </p>
     </div>
   </div>
 );
 
-
-const InfoCard = ({ icon, title, description }) => (
-  <div className="showcase-info-card">
+// Info Card Component
+const InfoCard = ({ icon, title, description, index }) => (
+  <div className="showcase-info-card reveal" style={{ animationDelay: `${index * 0.1}s` }}>
     <div className="showcase-icon-h3-wrap">
       <div className="info-card-icon">{icon}</div>
       <h3>{title}</h3>
@@ -193,61 +219,35 @@ const InfoCard = ({ icon, title, description }) => (
   </div>
 );
 
+// Project Overview Section
 const ProjectOverview = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Project Overview</h2>
     <div className="showcase-grid">
       <div className="showcase-inner-grid">
         {PROJECT_INFO.map((info, idx) => (
-          <InfoCard key={idx} {...info} />
+          <InfoCard key={idx} {...info} index={idx} />
         ))}
       </div>
 
-      <div className="showcase-info-card-para">
+      <div className="showcase-info-card-para reveal">
         Let's be honest —{" "}
-        <span className="highlight-text">managing money isn't fun</span>.
-        Between budgeting apps, expense trackers, and bill-splitting
-        tools, users constantly jump between platforms just to stay
-        financially organized. That's exactly what{" "}
-        <span className="highlight-text">KOA</span> fixes.
+        <span className="highlight-text">managing mental wellness isn't easy</span>.
+        Between meditation apps, sleep trackers, and mood journals,
+        users constantly jump between platforms just to stay
+        mentally balanced. That's exactly what{" "}
+        <span className="highlight-text">ZENFLOW</span> fixes.
         <br /><br />
-        KOA is a{" "}
+        ZENFLOW is a{" "}
         <span className="highlight-text">full-stack React Native app</span>{" "}
         that combines{" "}
         <span className="highlight-text">
-          budget tracking, goal-based saving, and Splitwise-style expense
-          sharing
+          meditation, sleep tracking, and mood analytics
         </span>{" "}
-        into one clean, intelligent platform. It's built for people who
+        into one clean, peaceful platform. It's built for people who
         want{" "}
         <span className="highlight-text">
-          financial clarity without the clutter
-        </span>
-        .
-        <br /><br />
-        Whether it's splitting rent with roommates, tracking monthly
-        spending, or saving for that Goa trip — KOA keeps everything in
-        one place. Users can see where their money goes, manage shared
-        expenses transparently, and stay aligned with their goals
-        through{" "}
-        <span className="highlight-text">
-          intuitive visuals and real-time sync
-        </span>
-        .
-        <br /><br />
-        Under the hood, KOA runs on{" "}
-        <span className="highlight-text">React Native</span>, powered by a{" "}
-        <span className="highlight-text">Node.js + Supabase backend</span>{" "}
-        for fast, secure, and scalable performance. The UI is
-        intentionally minimalist — every element designed to make
-        managing money feel smooth, reliable, and even a little
-        enjoyable.
-        <br /><br />
-        KOA isn't just another finance tracker — it's your{" "}
-        <span className="highlight-text">personal money companion</span>,
-        built to make budgeting{" "}
-        <span className="highlight-text">
-          collaborative, transparent, and stress-free
+          mental clarity without the complexity
         </span>
         .
       </div>
@@ -255,104 +255,52 @@ const ProjectOverview = () => (
   </section>
 );
 
+// Challenge Section
 const Challenge = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Challenge</h2>
     <p className="showcase-text">
       Let's face it —{" "}
       <span className="highlight-text">
-        managing money across personal budgets and group expenses is a
-        nightmare
+        managing mental wellness across different tools is overwhelming
       </span>
-      . Most people juggle between multiple apps: one for budgeting, one
-      for splitting bills, and another for tracking goals. The result?{" "}
+      . Most people juggle between multiple apps: one for meditation, one
+      for sleep, and another for mood tracking. The result?{" "}
       <span className="highlight-text">
-        Scattered data, unclear spending patterns, and no sense of
-        financial direction
-      </span>
-      .
-    </p>
-    <br />
-    <p className="showcase-text">
-      Users needed a single space where they could:
-      <br />•{" "}
-      <span className="highlight-text">
-        Track personal expenses and shared bills effortlessly
-      </span>
-      <br />•{" "}
-      <span className="highlight-text">Set meaningful savings goals</span>
-      <br />•{" "}
-      <span className="highlight-text">
-        Visualize where their money goes — without spreadsheets or
-        confusion
-      </span>
-      <br /><br />
-      The challenge wasn't just building another finance tracker. It was
-      designing a{" "}
-      <span className="highlight-text">
-        unified experience that's simple enough for daily use
-      </span>
-      ,{" "}
-      <span className="highlight-text">
-        smart enough to handle shared payments
-      </span>
-      , and{" "}
-      <span className="highlight-text">
-        visually engaging enough to keep users coming back
+        Scattered data, unclear patterns, and added stress
       </span>
       .
     </p>
   </section>
 );
 
+// Solution Section
 const Solution = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Solution</h2>
     <p className="showcase-text">
-      KOA was designed to bridge that exact gap — a{" "}
+      ZENFLOW was designed to bridge that exact gap — a{" "}
       <span className="highlight-text">
-        one-stop financial companion
+        one-stop wellness companion
       </span>{" "}
-      that simplifies money management for individuals and groups alike.
+      that simplifies mental health management.
       <br /><br />
-      I designed and developed KOA using{" "}
+      I designed and developed ZENFLOW using{" "}
       <span className="highlight-text">React Native</span> for seamless
       cross-platform performance, backed by a{" "}
       <span className="highlight-text">Node.js + Supabase</span> stack
-      for real-time data sync and secure authentication. The entire
-      experience focuses on{" "}
-      <span className="highlight-text">
-        clarity, collaboration, and control
-      </span>
-      .
-      <br /><br />
-      <span className="highlight-text"><b>Smart Budgeting:</b></span> Users can create personalized budgets, set limits, and visualize expenses through clean, interactive analytics.
-      <br />
-      <span className="highlight-text"><b>Splitwise-style Sharing:</b></span> Group expenses can be created, split, and settled transparently — no math, no awkward reminders.
-      <br />
-      <span className="highlight-text"><b>Goal-Based Saving:</b></span> Users can assign specific saving targets (like "New Laptop" or "Trip Fund") and track progress visually.
-      <br />
-      <span className="highlight-text"><b>Minimalist UI:</b></span> Designed in Figma, the interface uses soft gradients, clean typography, and simple navigation to make complex data feel effortless.
-      <br />
-      <span className="highlight-text"><b>Real-time Sync:</b></span> Supabase handles instant updates across users and groups — ensuring every transaction, budget, or balance stays accurate and live.
-      <br /><br />
-      KOA turns{" "}
-      <span className="highlight-text">
-        chaotic money management into an organized, collaborative, and
-        goal-driven experience
-      </span>
-      . It doesn't just track expenses —{" "}
-      <span className="highlight-text">it builds financial confidence</span>.
+      for real-time data sync and secure authentication.
     </p>
   </section>
 );
 
+// Design Process Section
 const DesignProcess = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Design Process</h2>
     <div className="flowchart-body">
-      {DESIGN_PROCESS_STEPS.map((step) => (
-        <div key={step.number} className="flowchart-step">
+      {DESIGN_PROCESS_STEPS.map((step, index) => (
+        <div key={step.number} className="flowchart-step reveal" style={{ animationDelay: `${index * 0.15}s` }}>
           <div className="flowchart-node">{step.number}</div>
           <div className="flowchart-connector"></div>
           <div className="process-step">
@@ -368,12 +316,13 @@ const DesignProcess = () => (
   </section>
 );
 
+// Key Features Section
 const KeyFeatures = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Key Features</h2>
     <div className="bento-grid">
       {KEY_FEATURES.map((feature, idx) => (
-        <div key={idx} className={`bento-item ${feature.size}`}>
+        <div key={idx} className={`bento-item ${feature.size} reveal`} style={{ animationDelay: `${idx * 0.1}s` }}>
           <div className="bento-icon">{feature.icon}</div>
           <h3>{feature.title}</h3>
           <p>{feature.description}</p>
@@ -383,48 +332,49 @@ const KeyFeatures = () => (
   </section>
 );
 
+// Visual Design Section
 const VisualDesign = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Visual Design</h2>
 
-    <div className="visual-subsection">
+    <div className="visual-subsection reveal">
       <h3 className="visual-subtitle">Wireframes</h3>
       <p className="showcase-text">
         I started with low-fidelity <span className="highlight-text">wireframes</span> to validate core flows —
-        creating a budget, splitting expenses, and visualizing analytics.
-        Each wireframe focused on minimizing taps while keeping navigation clear and consistent.
-        The goal was to make financial management feel as effortless as scrolling a feed.
+        meditation sessions, sleep tracking, and mood logging.
       </p>
       <div className="visual-image-placeholder">Wireframe Mockups Here</div>
     </div>
 
-    <div className="visual-subsection">
+    <div className="visual-subsection reveal">
       <h3 className="visual-subtitle">Typography</h3>
       <p className="showcase-text">
-        KOA uses a dual-type system to maintain both <span className="highlight-text">character</span> and <span className="highlight-text">readability</span>.
+        ZENFLOW uses a dual-type system to maintain both <span className="highlight-text">serenity</span> and <span className="highlight-text">readability</span>.
         <br />
         <b>Bebas Neue</b> delivers bold, confident headings, while <b>Inter</b> ensures clarity across interfaces.
-        The pairing brings structure, hierarchy, and personality without visual clutter.
       </p>
       <div className="typography-preview">
-        <div className="font-sample bebas">Aa Bb Cc — Bebas Neue</div>
-        <div className="font-sample inter">Aa Bb Cc — Inter</div>
+        <div className="font-sample bebas reveal">Aa Bb Cc — Bebas Neue</div>
+        <div className="font-sample inter reveal">Aa Bb Cc — Inter</div>
       </div>
     </div>
 
-    <div className="visual-subsection">
+    <div className="visual-subsection reveal">
       <h3 className="visual-subtitle">Color Scheme</h3>
       <p className="showcase-text">
-        KOA's palette conveys <span className="highlight-text">trust and calm</span>.
+        ZENFLOW's palette conveys <span className="highlight-text">peace and tranquility</span>.
         Deep navy tones represent stability, while soft cream and neutral grays introduce warmth and balance.
-        The subtle gradient transitions create visual depth without distraction.
       </p>
       <div className="color-palette">
         {COLOR_SWATCHES.map((swatch, idx) => (
           <div
             key={idx}
-            className="color-swatch"
-            style={{ background: swatch.color, color: swatch.textColor }}
+            className="color-swatch reveal"
+            style={{
+              background: swatch.color,
+              color: swatch.textColor,
+              animationDelay: `${idx * 0.1}s`
+            }}
           >
             {swatch.color.toUpperCase()}
           </div>
@@ -434,8 +384,9 @@ const VisualDesign = () => (
   </section>
 );
 
+// Screen Components
 const ScreenImage = ({ src, alt }) => (
-  <div className="mockup-placeholder">
+  <div className="mockup-placeholder reveal">
     <img
       src={src}
       alt={alt}
@@ -450,28 +401,28 @@ const ScreenImage = ({ src, alt }) => (
 );
 
 const ScreenPlaceholder = ({ label }) => (
-  <div className="mockup-placeholder">
+  <div className="mockup-placeholder reveal">
     <div className="mockup-device">
       <p>{label}</p>
     </div>
   </div>
 );
 
+// Final Designs Section
 const FinalDesigns = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Final Designs</h2>
     <p className="showcase-text">
-      The visual identity and structure of KOA translate into an intuitive, high-clarity interface across all touchpoints — from onboarding to analytics.
-      Each flow was refined for simplicity, legibility, and touch precision across devices.
+      The visual identity and structure of ZENFLOW translate into an intuitive, calming interface across all touchpoints.
     </p>
 
     {SCREEN_SECTIONS.map((section, idx) => (
-      <div key={idx} className="final-design-subsection">
+      <div key={idx} className="final-design-subsection reveal" style={{ animationDelay: `${idx * 0.1}s` }}>
         <h3 className="final-subtitle">{section.title}</h3>
         <div
           className="mockup-row"
           style={
-            section.title === "Transaction Screens"
+            section.title === "Meditation Screens"
               ? { gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }
               : undefined
           }
@@ -492,39 +443,27 @@ const FinalDesigns = () => (
   </section>
 );
 
+// Development Section
 const Development = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Development</h2>
 
     <p className="showcase-text">
-      KOA was engineered with a focus on <span className="highlight-text">performance</span> and
-      <span className="highlight-text"> scalability</span>.
+      ZENFLOW was engineered with a focus on <span className="highlight-text">performance</span> and
+      <span className="highlight-text"> mindfulness</span>.
       Built using <span className="highlight-text">React Native</span> and
-      <span className="highlight-text"> Node.js + Supabase</span>, the architecture ensures seamless real-time updates,
-      optimized API calls, and minimal latency across devices.
-      <br /><br />
-      Each module — from expense handling to analytics — is built using clean modular principles,
-      enabling rapid iteration, testing, and maintainability. The visual layer integrates
-      <span className="highlight-text"> Reanimated</span> for micro-interactions and
-      <span className="highlight-text"> gesture-based transitions</span>.
+      <span className="highlight-text"> Node.js + Supabase</span>, the architecture ensures seamless real-time updates.
     </p>
 
     <div className="code-collage">
       {CODE_IMAGES.map((code, idx) => (
-        <div key={idx} className={`code-card ${code.size}`}>
+        <div key={idx} className={`code-card ${code.size} reveal`} style={{ animationDelay: `${idx * 0.1}s` }}>
           <img src={code.src} alt={code.alt} />
         </div>
       ))}
     </div>
 
-    <p className="showcase-text">
-      The app leverages <span className="highlight-text">Supabase's real-time channels</span> for collaborative
-      group expense sync and <span className="highlight-text">JWT-secured endpoints</span> for user authentication.
-      Animations, transitions, and caching mechanisms are implemented with a focus on device efficiency
-      and offline-first UX.
-    </p>
-
-    <div className="github-link-wrap">
+    <div className="github-link-wrap reveal">
       <a
         href="https://github.com/Rehanaparbin02/PaisaWise"
         className="github-button"
@@ -547,80 +486,43 @@ const Development = () => (
   </section>
 );
 
+// Key Learnings Section
 const KeyLearnings = () => (
-  <section className="showcase-section showcase-section-last">
+  <section className="showcase-section showcase-section-last reveal">
     <h2 className="showcase-section-title highlight-title">Key Learnings</h2>
     <p className="showcase-text">
-      Building KOA reinforced that great financial tools should feel
-      like a helpful companion, not an accountant. The most impactful
-      features were those that reduced friction—auto-categorization and
-      smart suggestions saved users hours of manual entry. This project
-      taught me that when designing for sensitive topics like money,
-      trust and clarity are paramount.
+      Building ZENFLOW reinforced that great wellness tools should feel
+      like a peaceful sanctuary, not another source of stress. The most impactful
+      features were those that reduced friction—guided sessions and
+      smart insights helped users find calm effortlessly.
     </p>
   </section>
 );
 
 // Main Component
-export default function ProjectShowcaseKOA() {
-  const navigate = useNavigate();
-  const containerRef = useRef(null);
+export default function ProjectShowcaseZENFLOW() {
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const handleClose = useCallback((e) => {
-    e?.stopPropagation();
-    navigate(-1);
-  }, [navigate]);
-
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === "Escape") handleClose();
-  }, [handleClose]);
+  useScrollAnimation();
 
   useEffect(() => {
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden auto";
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = prevOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleKeyDown]);
+    setIsLoaded(true);
+    window.scrollTo(0, 0); // Scroll to top on mount
+  }, []);
 
   return (
-    <div
-      className="showcase-overlay"
-      onClick={handleClose}
-      aria-modal="true"
-      role="dialog"
-    >
-      <div
-        className="showcase-container"
-        onClick={(e) => e.stopPropagation()}
-        ref={containerRef}
-        aria-label="KOA showcase"
-      >
-        <button
-          className="showcase-close"
-          onClick={handleClose}
-          aria-label="Close showcase"
-        >
-          <span>×</span>
-        </button>
-
-        <Hero />
-
-        <div className="showcase-body">
-          <ProjectOverview />
-          <Challenge />
-          <Solution />
-          <DesignProcess />
-          <KeyFeatures />
-          <VisualDesign />
-          <FinalDesigns />
-          <Development />
-          <KeyLearnings />
-        </div>
+    <div className={`showcase-full-page ${isLoaded ? 'loaded' : ''}`}>
+      <Hero />
+      <div className="showcase-body">
+        <ProjectOverview />
+        <Challenge />
+        <Solution />
+        <DesignProcess />
+        <KeyFeatures />
+        <VisualDesign />
+        <FinalDesigns />
+        <Development />
+        <KeyLearnings />
       </div>
     </div>
   );

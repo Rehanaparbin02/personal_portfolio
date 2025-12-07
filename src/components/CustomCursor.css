@@ -8,9 +8,11 @@
 * {
     cursor: none !important;
 }
+
 .error-state-native-cursor-show * {
     cursor: auto !important;
 }
+
 #root>div {
     min-height: 0%;
     display: flex;
@@ -22,8 +24,8 @@
    =================================== */
 .cursor-dot {
     position: fixed;
-    width: 6px;
-    height: 6px;
+    width: 10px;
+    height: 10px;
     background: #ffffff;
     border-radius: 50%;
     transform: translate(-50%, -50%);
@@ -31,9 +33,9 @@
     z-index: 10001;
     opacity: 1;
     mix-blend-mode: difference;
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-        opacity 0.2s ease;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
     will-change: transform, left, top;
+
 }
 
 .cursor-dot.clicking {
@@ -50,19 +52,16 @@
    =================================== */
 .cursor-ring {
     position: fixed;
-    width: 24px;
-    height: 24px;
-    border: 2px solid #ffffff;
+    width: 44px;
+    height: 44px;
+    border: 10px solid #fff;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 10000;
     opacity: 0.8;
     mix-blend-mode: difference;
-    transition: width 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-        height 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-        opacity 0.3s ease,
-        border-width 0.3s ease;
+    transition: width 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), height 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, border-width 0.3s ease;
     will-change: transform, left, top;
     background: transparent;
 }

@@ -21,7 +21,8 @@ const Contact = lazy(() => import("./pages/Contact"));
 const ProjectShowcaseKOA = lazy(() => import("./components/ProjectShowcaseKOA"));
 const ProjectShowcaseZENFLOW = lazy(() => import("./components/ProjectShowcaseZENFLOW"));
 const ProjectShowcaseEVENTLY = lazy(() => import("./components/ProjectShowcaseEVENTLY"));
-const ProjectShowcaseFOODLOG = lazy(() => import("./components/ProjectShowcaseFOODLOG"));
+// const ProjectShowcaseFOODLOG = lazy(() => import("./components/ProjectShowcaseFOODLOG"));
+const ProjectShowcaseDOIT = lazy(() => import("./components/ProjectShowcaseDOIT"));
 
 const App = () => {
   // Check if this is the first load in this session
@@ -92,7 +93,8 @@ const App = () => {
               <Route path="/showcase/koa" element={<ProjectShowcaseKOA />} />
               <Route path="/showcase/zenflow" element={<ProjectShowcaseZENFLOW />} />
               <Route path="/showcase/evently" element={<ProjectShowcaseEVENTLY />} />
-              <Route path="/showcase/foodlog" element={<ProjectShowcaseFOODLOG />} />
+              {/* <Route path="/showcase/foodlog" element={<ProjectShowcaseFOODLOG />} /> */}
+              <Route path="/showcase/do-it" element={<ProjectShowcaseDOIT />} />
             </Routes>
           </Suspense>
 

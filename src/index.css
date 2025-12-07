@@ -5,6 +5,15 @@
   --color-background-main: #f4efe3;
   --color-white: #ffffff;
   --font-main: 'Koulen', sans-serif;
+
+  /* Vertical stripes background pattern */
+  --bg-stripes:
+    repeating-linear-gradient(90deg,
+      transparent 0px,
+      transparent 149px,
+      rgba(29, 35, 66, 0.10) 149px,
+      rgba(29, 35, 66, 0.10) 150px),
+    var(--color-background-main);
 }
 
 /* 2. Reset and apply global layout */
@@ -27,6 +36,8 @@ body,
 body {
   display: flex;
   flex-direction: column;
+  /* Vertical stripes background */
+  background: var(--bg-stripes);
 }
 
 /* 4. Ensure App stretches full height */

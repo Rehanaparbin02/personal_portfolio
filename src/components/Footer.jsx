@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   FaBehance,
   FaDownload,
@@ -12,6 +12,8 @@ import { HiArrowUpRight } from "react-icons/hi2";
 import "./Footer.css";
 
 const Footer = () => {
+  const { pathname } = useLocation();
+  const isDoItShowcase = pathname === "/showcase/do-it";
   const [isVisible, setIsVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle | sending | done
@@ -58,7 +60,7 @@ const Footer = () => {
   return (
     <footer
       ref={footerRef}
-      className={`footer ${isVisible ? "is-visible" : ""}`}
+      className={`footer ${isVisible ? "is-visible" : ""} ${isDoItShowcase ? "showcase-dark" : ""}`}
     >
       {/* Big background word for modern hero-like footer */}
       <div className="footer-bigword" aria-hidden="true">

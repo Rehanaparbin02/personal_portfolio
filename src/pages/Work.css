@@ -1,7 +1,7 @@
 .work-container {
   min-height: calc(100vh - 60px);
   padding: 60px 40px;
-  background-color: #f4efe3;
+  background: var(--bg-stripes);
 
   /* on-load animation base */
   opacity: 0;
@@ -134,9 +134,11 @@
     grid-template-columns: 1fr;
     gap: 40px;
   }
+
   .intro-title {
     font-size: 3.5rem;
   }
+
   .work-title {
     font-size: 5rem;
     top: -3rem;

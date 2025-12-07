@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import "./ProjectShowcaseKOA.css";
 // Assets
-// import heroBg from "../assets/showcase-hero.png";
 import codeImage from "../assets/image.png";
 import homeScreen1 from "../assets/home/home-1.png";
 import homeScreen2 from "../assets/home/home-2.png";
@@ -23,9 +21,6 @@ import analyticsScreen4 from "../assets/analytics/analytics04.png";
 import walletScreen from "../assets/wallet/wallet.png";
 
 // Constants
-const HERO_BG_GRADIENT = "linear-gradient(135deg, rgba(44,62,92,0.75) 0%, rgba(26,37,56,0.75) 100%)";
-
-
 const TAGS = ["UI/UX", "ANDROID", "IOS", "REACT NATIVE", "PASSION PROJECT"];
 
 const PROJECT_INFO = [
@@ -156,21 +151,52 @@ const CODE_IMAGES = [
   { src: codeImage, alt: "Expense Service Function", size: "medium" },
 ];
 
+// Custom Hook for Scroll Animations
+const useScrollAnimation = () => {
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -100px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, observerOptions);
+
+    const elements = document.querySelectorAll('.reveal');
+    elements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+};
+
+// Hero Component
 const Hero = () => (
-  <div className="showcase-hero koa-hero">
-    <div className="showcase-hero-image">
-      <div className="hero-gradient-overlay"></div>
+  <div className="showcase-hero koa-hero animate-hero">
+    <div className="hero-particles">
+      {[...Array(20)].map((_, i) => (
+        <div key={i} className="particle" style={{
+          left: `${Math.random() * 100}%`,
+          animationDelay: `${Math.random() * 3}s`,
+          animationDuration: `${3 + Math.random() * 4}s`
+        }}></div>
+      ))}
     </div>
 
     <div className="showcase-hero-content glass-effect">
+      <div className="hero-badge">Finance Reimagined</div>
       <h1 className="showcase-title">KOA</h1>
       <div className="showcase-tags">
         <span className="showcase-tag">React Native</span>
         <span className="showcase-tag">AI UX</span>
         <span className="showcase-tag">Finance App</span>
-        <span className="showcase-tag">IOS</span>
-        <span className="showcase-tag">REACT NATIVE</span>
-        <span className="showcase-tag">PASSION PROJECT</span>
+        <span className="showcase-tag">iOS</span>
+        <span className="showcase-tag">Android</span>
+        <span className="showcase-tag">Passion Project</span>
       </div>
       <p className="showcase-subtitle">
         KOA transforms how you handle money — blending automation,
@@ -182,9 +208,9 @@ const Hero = () => (
   </div>
 );
 
-
-const InfoCard = ({ icon, title, description }) => (
-  <div className="showcase-info-card">
+// Info Card Component
+const InfoCard = ({ icon, title, description, index }) => (
+  <div className="showcase-info-card reveal" style={{ animationDelay: `${index * 0.1}s` }}>
     <div className="showcase-icon-h3-wrap">
       <div className="info-card-icon">{icon}</div>
       <h3>{title}</h3>
@@ -193,17 +219,18 @@ const InfoCard = ({ icon, title, description }) => (
   </div>
 );
 
+// Project Overview Section
 const ProjectOverview = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Project Overview</h2>
     <div className="showcase-grid">
       <div className="showcase-inner-grid">
         {PROJECT_INFO.map((info, idx) => (
-          <InfoCard key={idx} {...info} />
+          <InfoCard key={idx} {...info} index={idx} />
         ))}
       </div>
 
-      <div className="showcase-info-card-para">
+      <div className="showcase-info-card-para reveal">
         Let's be honest —{" "}
         <span className="highlight-text">managing money isn't fun</span>.
         Between budgeting apps, expense trackers, and bill-splitting
@@ -255,8 +282,9 @@ const ProjectOverview = () => (
   </section>
 );
 
+// Challenge Section
 const Challenge = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Challenge</h2>
     <p className="showcase-text">
       Let's face it —{" "}
@@ -305,8 +333,9 @@ const Challenge = () => (
   </section>
 );
 
+// Solution Section
 const Solution = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Solution</h2>
     <p className="showcase-text">
       KOA was designed to bridge that exact gap — a{" "}
@@ -347,12 +376,13 @@ const Solution = () => (
   </section>
 );
 
+// Design Process Section
 const DesignProcess = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Design Process</h2>
     <div className="flowchart-body">
-      {DESIGN_PROCESS_STEPS.map((step) => (
-        <div key={step.number} className="flowchart-step">
+      {DESIGN_PROCESS_STEPS.map((step, index) => (
+        <div key={step.number} className="flowchart-step reveal" style={{ animationDelay: `${index * 0.15}s` }}>
           <div className="flowchart-node">{step.number}</div>
           <div className="flowchart-connector"></div>
           <div className="process-step">
@@ -368,12 +398,13 @@ const DesignProcess = () => (
   </section>
 );
 
+// Key Features Section
 const KeyFeatures = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Key Features</h2>
     <div className="bento-grid">
       {KEY_FEATURES.map((feature, idx) => (
-        <div key={idx} className={`bento-item ${feature.size}`}>
+        <div key={idx} className={`bento-item ${feature.size} reveal`} style={{ animationDelay: `${idx * 0.1}s` }}>
           <div className="bento-icon">{feature.icon}</div>
           <h3>{feature.title}</h3>
           <p>{feature.description}</p>
@@ -383,11 +414,12 @@ const KeyFeatures = () => (
   </section>
 );
 
+// Visual Design Section
 const VisualDesign = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Visual Design</h2>
 
-    <div className="visual-subsection">
+    <div className="visual-subsection reveal">
       <h3 className="visual-subtitle">Wireframes</h3>
       <p className="showcase-text">
         I started with low-fidelity <span className="highlight-text">wireframes</span> to validate core flows —
@@ -398,7 +430,7 @@ const VisualDesign = () => (
       <div className="visual-image-placeholder">Wireframe Mockups Here</div>
     </div>
 
-    <div className="visual-subsection">
+    <div className="visual-subsection reveal">
       <h3 className="visual-subtitle">Typography</h3>
       <p className="showcase-text">
         KOA uses a dual-type system to maintain both <span className="highlight-text">character</span> and <span className="highlight-text">readability</span>.
@@ -407,12 +439,12 @@ const VisualDesign = () => (
         The pairing brings structure, hierarchy, and personality without visual clutter.
       </p>
       <div className="typography-preview">
-        <div className="font-sample bebas">Aa Bb Cc — Bebas Neue</div>
-        <div className="font-sample inter">Aa Bb Cc — Inter</div>
+        <div className="font-sample bebas reveal">Aa Bb Cc — Bebas Neue</div>
+        <div className="font-sample inter reveal">Aa Bb Cc — Inter</div>
       </div>
     </div>
 
-    <div className="visual-subsection">
+    <div className="visual-subsection reveal">
       <h3 className="visual-subtitle">Color Scheme</h3>
       <p className="showcase-text">
         KOA's palette conveys <span className="highlight-text">trust and calm</span>.
@@ -423,8 +455,12 @@ const VisualDesign = () => (
         {COLOR_SWATCHES.map((swatch, idx) => (
           <div
             key={idx}
-            className="color-swatch"
-            style={{ background: swatch.color, color: swatch.textColor }}
+            className="color-swatch reveal"
+            style={{
+              background: swatch.color,
+              color: swatch.textColor,
+              animationDelay: `${idx * 0.1}s`
+            }}
           >
             {swatch.color.toUpperCase()}
           </div>
@@ -434,8 +470,9 @@ const VisualDesign = () => (
   </section>
 );
 
+// Screen Components
 const ScreenImage = ({ src, alt }) => (
-  <div className="mockup-placeholder">
+  <div className="mockup-placeholder reveal">
     <img
       src={src}
       alt={alt}
@@ -450,15 +487,16 @@ const ScreenImage = ({ src, alt }) => (
 );
 
 const ScreenPlaceholder = ({ label }) => (
-  <div className="mockup-placeholder">
+  <div className="mockup-placeholder reveal">
     <div className="mockup-device">
       <p>{label}</p>
     </div>
   </div>
 );
 
+// Final Designs Section
 const FinalDesigns = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Final Designs</h2>
     <p className="showcase-text">
       The visual identity and structure of KOA translate into an intuitive, high-clarity interface across all touchpoints — from onboarding to analytics.
@@ -466,7 +504,7 @@ const FinalDesigns = () => (
     </p>
 
     {SCREEN_SECTIONS.map((section, idx) => (
-      <div key={idx} className="final-design-subsection">
+      <div key={idx} className="final-design-subsection reveal" style={{ animationDelay: `${idx * 0.1}s` }}>
         <h3 className="final-subtitle">{section.title}</h3>
         <div
           className="mockup-row"
@@ -492,8 +530,9 @@ const FinalDesigns = () => (
   </section>
 );
 
+// Development Section
 const Development = () => (
-  <section className="showcase-section">
+  <section className="showcase-section reveal">
     <h2 className="showcase-section-title highlight-title">Development</h2>
 
     <p className="showcase-text">
@@ -511,7 +550,7 @@ const Development = () => (
 
     <div className="code-collage">
       {CODE_IMAGES.map((code, idx) => (
-        <div key={idx} className={`code-card ${code.size}`}>
+        <div key={idx} className={`code-card ${code.size} reveal`} style={{ animationDelay: `${idx * 0.1}s` }}>
           <img src={code.src} alt={code.alt} />
         </div>
       ))}
@@ -524,7 +563,7 @@ const Development = () => (
       and offline-first UX.
     </p>
 
-    <div className="github-link-wrap">
+    <div className="github-link-wrap reveal">
       <a
         href="https://github.com/Rehanaparbin02/PaisaWise"
         className="github-button"
@@ -547,8 +586,9 @@ const Development = () => (
   </section>
 );
 
+// Key Learnings Section
 const KeyLearnings = () => (
-  <section className="showcase-section showcase-section-last">
+  <section className="showcase-section showcase-section-last reveal">
     <h2 className="showcase-section-title highlight-title">Key Learnings</h2>
     <p className="showcase-text">
       Building KOA reinforced that great financial tools should feel
@@ -563,64 +603,28 @@ const KeyLearnings = () => (
 
 // Main Component
 export default function ProjectShowcaseKOA() {
-  const navigate = useNavigate();
-  const containerRef = useRef(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const handleClose = useCallback((e) => {
-    e?.stopPropagation();
-    navigate(-1);
-  }, [navigate]);
-
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === "Escape") handleClose();
-  }, [handleClose]);
+  useScrollAnimation();
 
   useEffect(() => {
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden auto";
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = prevOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleKeyDown]);
+    setIsLoaded(true);
+    window.scrollTo(0, 0); // Scroll to top on mount
+  }, []);
 
   return (
-    <div
-      className="showcase-overlay"
-      onClick={handleClose}
-      aria-modal="true"
-      role="dialog"
-    >
-      <div
-        className="showcase-container"
-        onClick={(e) => e.stopPropagation()}
-        ref={containerRef}
-        aria-label="KOA showcase"
-      >
-        <button
-          className="showcase-close"
-          onClick={handleClose}
-          aria-label="Close showcase"
-        >
-          <span>×</span>
-        </button>
-
-        <Hero />
-
-        <div className="showcase-body">
-          <ProjectOverview />
-          <Challenge />
-          <Solution />
-          <DesignProcess />
-          <KeyFeatures />
-          <VisualDesign />
-          <FinalDesigns />
-          <Development />
-          <KeyLearnings />
-        </div>
+    <div className={`showcase-full-page ${isLoaded ? 'loaded' : ''}`}>
+      <Hero />
+      <div className="showcase-body">
+        <ProjectOverview />
+        <Challenge />
+        <Solution />
+        <DesignProcess />
+        <KeyFeatures />
+        <VisualDesign />
+        <FinalDesigns />
+        <Development />
+        <KeyLearnings />
       </div>
     </div>
   );

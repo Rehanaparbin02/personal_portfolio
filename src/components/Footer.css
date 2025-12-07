@@ -20,7 +20,7 @@
 
 .footer {
   position: relative;
-  background: var(--footer-page-bg);
+  background: var(--bg-stripes);
   padding: 72px 24px 40px;
   overflow: hidden;
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -55,21 +55,13 @@
   transform: translateX(-50%);
   width: 100%;
   text-align: center;
-
   font-family: "Koulen", sans-serif;
-
-  /* Fully responsive scaling */
   font-size: clamp(4rem, 20vw, 12rem);
-
-  /* Adaptive letter spacing */
   letter-spacing: clamp(10px, 8vw, 76px);
-
   text-transform: uppercase;
   color: rgba(29, 35, 66, 0.06);
   pointer-events: none;
   user-select: none;
-
-  /* Float animation */
   animation: footerWordFloat 24s ease-in-out infinite;
 }
 
@@ -392,8 +384,8 @@
   justify-content: space-between;
   align-items: center;
   gap: 14px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(29, 35, 66, 0.08);
+  /* padding-top: 10px; */
+  /* border-top: 1px solid rgba(29, 35, 66, 0.08); */
 
   opacity: 0;
   transform: translateY(18px);
@@ -687,4 +679,96 @@
 .footer button:focus-visible {
   outline: 2px solid #1d2342;
   outline-offset: 3px;
+}
+
+/* ===================== Showcase Dark Mode Override ===================== */
+.footer.showcase-dark {
+  background: #0A0A0A;
+  /* --deep-void */
+  padding-top: 0;
+  /* Remove top padding to merge better if needed, or keep it */
+  /* border-top: 1px solid #333; */
+}
+
+.footer.showcase-dark .footer-bigword {
+  color: rgba(255, 255, 255, 0.03);
+}
+
+.footer.showcase-dark .footer-main {
+  background: #1A1A1A;
+  /* --surface-black */
+  border: 1px solid #333;
+  /* --border-gray */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.footer.showcase-dark .footer-meta,
+.footer.showcase-dark .footer-link.muted {
+  color: #9CA3AF;
+  /* --text-secondary */
+}
+
+/* Update accent colors in dark mode to match showcase */
+.footer.showcase-dark .brand-title {
+  color: #F3F4F6;
+  /* --pure-white */
+}
+
+.footer.showcase-dark .footer-column-title {
+  color: #9CA3AF;
+  text-decoration-color: #22C55E;
+  /* --neon-green */
+}
+
+.footer.showcase-dark .footer-link-btn,
+.footer.showcase-dark .footer-link {
+  color: #D1D5DB;
+  /* --text-body */
+}
+
+.footer.showcase-dark .footer-link-btn:hover,
+.footer.showcase-dark .footer-link:hover {
+  color: #22C55E;
+  /* --neon-green */
+}
+
+.footer.showcase-dark .footer-link-btn::after,
+.footer.showcase-dark .footer-link::after {
+  background: #22C55E;
+}
+
+/* Buttons in dark mode */
+.footer.showcase-dark .footer-link-download-btn {
+  border-color: #333;
+  color: #F3F4F6;
+}
+
+.footer.showcase-dark .footer-link-download-btn:hover {
+  background: #22C55E;
+  color: #000;
+  border-color: #22C55E;
+}
+
+.footer.showcase-dark .footer-social-pill {
+  background: #0A0A0A;
+  /* Darker than card */
+  border-color: #333;
+}
+
+.footer.showcase-dark .footer-social-pill:hover {
+  background: #22C55E;
+  color: #000;
+  border-color: #22C55E;
+}
+
+.footer.showcase-dark .back-to-top-chip {
+  background: #22C55E;
+  color: #000;
+  border-color: #22C55E;
+}
+
+.footer.showcase-dark .back-to-top-chip:hover {
+  background: #16A34A;
+  /* Forest green */
+  box-shadow: 0 10px 20px rgba(34, 197, 94, 0.2);
 }

@@ -91,7 +91,7 @@
   border-radius: 14px;
   padding: 32px;
   box-shadow: 0 8px 30px rgba(20, 30, 50, 0.06);
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .about-card:hover {
@@ -120,7 +120,7 @@
   opacity: 0.5;
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.5s ease-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .reveal .section-title::after {
@@ -200,7 +200,7 @@
   position: relative;
   width: 350px;
   height: 350px;
-  transition: transform 0.4s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .photo-frame:hover {
@@ -216,7 +216,7 @@
   top: -20px;
   left: -20px;
   z-index: 0;
-  transition: all 0.4s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .photo-frame:hover::before {
@@ -233,7 +233,7 @@
   object-fit: cover;
   border: 3px solid var(--color-primary-dark);
   z-index: 1;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease-in-out;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transform: translateZ(0);
@@ -247,7 +247,7 @@
   padding: 40px;
   margin-bottom: 60px;
   border-radius: 10px;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .about-intro-card:hover {
@@ -270,7 +270,7 @@
   border: 2px solid var(--color-primary-dark);
   padding: 35px;
   margin-bottom: 40px;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
   position: relative;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -513,7 +513,7 @@
   background: var(--color-primary-dark);
   border: 3px solid var(--color-primary-dark);
   z-index: 1;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .experience-item:hover .timeline-dot {

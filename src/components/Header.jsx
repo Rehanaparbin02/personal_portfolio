@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import './Header.css';
-import { useRef } from 'react';
-
 
 const Header = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const location = useLocation();
+  const isDoItPage = location.pathname.includes('/showcase/do-it');
 
   const magneticRef = useRef(null);
 
@@ -49,7 +49,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="navbar">
+      <header className={`navbar ${isDoItPage ? 'doit-theme' : ''}`}>
         <div className="logo">RP</div>
 
         {/* Desktop Navigation */}
